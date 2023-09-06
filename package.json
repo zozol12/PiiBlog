@@ -1,0 +1,23 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxthq/ui": "^2.7.0",
+    "@nuxtjs/supabase": "^1.0.2",
+    "@sidebase/nuxt-auth": "^0.6.0-beta.5",
+    "nuxt": "^3.7.0",
+    "nuxt-mongoose": "^0.0.9"
+  },
+  "dependencies": {
+    "mongoose": "^7.5.0",
+    "nuxt-server-utils": "^0.0.7"
+  }
+}
