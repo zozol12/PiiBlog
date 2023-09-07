@@ -33,11 +33,11 @@
 
       <!-- Create Post Button -->
       <div class="text-center">
-        <nuxt-link to="/post/create">
+        <NuxtLink to="/post/creator">
           <UButton class=" text-white font-semibold py-2 px-4 rounded-lg focus:outline-none">
             Create New Post
           </UButton>
-        </nuxt-link>
+        </NuxtLink>
       </div>
 
       <!-- Logout Button -->

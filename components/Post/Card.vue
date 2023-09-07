@@ -7,7 +7,7 @@
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="text-white text-center px-6">
             <h2 class="text-2xl md:text-3xl font-semibold mb-2">{{ post.name }}</h2>
-            <p class="text-sm md:text-base">Post created at: {{ formatDate(post.created_at) }}</p>
+            <p class="text-sm md:text-base">Post created at: {{ dateUtils.formatDate(post.created_at) }}</p>
             <p class="text-sm md:text-base italic">Post created by: {{ post.created_by }}</p>
           </div>
         </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '@/utils/dateUtils';
+const dateUtils = useDateUtils();
 
 defineProps({
   post: {

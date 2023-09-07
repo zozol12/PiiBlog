@@ -17,8 +17,14 @@
         </main>
         <footer class="mt-6 text-sm " v-if="post">
           <p>Author: {{ post.created_by }}</p>
-          <p>Created on: {{ formatDate(post.created_at) }}</p>
+          <p>Created on: {{ dateUtils.formatDate(post.created_at) }}</p>
         </footer>
+              <!-- Edit button for authenticated users -->
+        <div v-if="isAuthenticated">
+            <NuxtLink :to="{ path: 'creator', query: { mode:'edit', slug: slug } }">
+                <button class="btn">Edit Post</button>
+            </NuxtLink>
+        </div>
       </div>
     </div>
   </template>
@@ -26,13 +32,15 @@
   <script setup lang="ts">
 
     import type { Database } from '~/types'
-    import { formatDate } from '@/utils/dateUtils';
+    
+    const dateUtils = useDateUtils();
 
     const route = useRoute();
     const slug = ref(route.params.slug);
     const post: Ref<any> = ref(null);
     const client = useSupabaseClient<Database>();
     const postFetched = ref(false); // Initially, hide the post content
+    const isAuthenticated = useSupabaseUser()?.id !== null; // Check if the user is authenticated
 
     async function fetchPost() {
         const { data, error } = await client
