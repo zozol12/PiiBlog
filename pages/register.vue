@@ -6,14 +6,17 @@
         password: undefined,
     })
 
-    const errorMsg = ref(null)
-    const successMsg = ref(null)
+
+    const errorMsg = ref(null);
+    const successMsg = ref(null);
+    const isLoading = ref(false);
 
     const client = useSupabaseClient()
 
     const form = ref()
     // Sign Up logic
     async function signUp () {
+    isLoading.value = true;
         try{
             // Do something with state.value
             const {data, error} = await client.auth.signUp({
@@ -24,6 +27,8 @@
         } catch (error) {
             errorMsg.value = error.message
         }
+
+    isLoading.value = false;
     }
 </script>
 
@@ -41,18 +46,15 @@
             <UFormGroup label="Password" name="password">
             <UInput v-model="state.password" type="password" />
             </UFormGroup>
-            <UButton type="submit">
-            Submit
+            <UButton :loading="isLoading" type="submit" class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
+                {{ isLoading ? 'Logging in...' : 'Submit' }}
             </UButton>
             <ULink to="/login"> Already have an account?</ULink>
-            <div v-if="errorMsg">{{errorMsg.value}}</div>
-            <UAlert color="red" variant="solid" v-if="errorMsg"> 
-                <template #title> Error </template>
-                <template #description>{{errorMsg}}</template>
+            <UAlert title="Error" color="red" variant="solid" v-if="errorMsg">
+                <template #description>{{ errorMsg }}</template>
             </UAlert>
-            <UAlert color="green" variant="solid" v-else-if="successMsg">
-                <template #title> Success </template>
-                <template #description>{{successMsg}}</template>
+            <UAlert title="Success" color="green" variant="solid" v-else-if="successMsg">
+                <template #description>{{ successMsg }}</template>
             </UAlert>
         </UForm>
   </UCard>  

@@ -1,8 +1,6 @@
 <template>
     <div class="min-h-screen py-8">
       <div class="container mx-auto">
-        <h1 class="text-3xl font-semibold mb-8">Blog</h1>
-  
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <!-- Blog Feed -->
           <div class="md:w-3/4 space-y-4">
@@ -16,14 +14,14 @@
             </div>
             <!-- Load More Button -->
             <div class="text-center">
-              <button
+              <UButton
                 v-if="hasMorePosts"
                 @click="loadMorePosts"
                 :disabled="isLoading"
-                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none"
+                class=" font-semibold py-2 px-4 rounded-lg focus:outline-none"
               >
                 {{ isLoading ? 'Loading...' : 'Load More' }}
-              </button>
+              </UButton>
             </div>
           </div>
   
@@ -33,14 +31,14 @@
               <div class="text-center mb-4">
                 <div class="text-2xl font-semibold">Profile</div>
               </div>
-              <!-- Add profile content here -->
+              <!-- profile content here -->
             </div>
   
             <div class="p-4 rounded-lg shadow-md">
               <div class="text-center mb-4">
                 <div class="text-2xl font-semibold">Settings</div>
               </div>
-              <!-- Add settings content here -->
+              <!-- settings content here -->
             </div>
           </div>
         </div>
@@ -50,14 +48,14 @@
   
   <script setup lang="ts">
 const client = useSupabaseClient();
-const postLimit = 6;
+const postLimit: number = 6;
 
-const visiblePosts = ref([]);
-let loadedPosts = 0;
-let isLoading = ref(false);
-let hasMorePosts = ref(true);
+const visiblePosts: Ref<any[]> = ref([]);
+let loadedPosts: number = 0;
+let isLoading: Ref<boolean> = ref(false);
+let hasMorePosts: Ref<boolean> = ref(true);
 
-const loadMorePosts = async () => {
+async function loadMorePosts() {
   if (isLoading.value || !hasMorePosts.value) return;
 
   isLoading.value = true;
@@ -87,7 +85,7 @@ const loadMorePosts = async () => {
 // Initial load
 loadMorePosts();
 
-const getBackgroundImageStyle = (thumbnail_name) => {
+const getBackgroundImageStyle = (thumbnail_name: string) => {
   if (thumbnail_name) {
     const storage = client.storage.from('thumbnails');
     const backgroundImageUrl = storage.getPublicUrl(thumbnail_name).data.publicUrl;
@@ -97,12 +95,11 @@ const getBackgroundImageStyle = (thumbnail_name) => {
 };
 
 onMounted(() => {
-  // You can trigger `loadMorePosts` when the user scrolls or performs an action to load more posts.
-  // For example:
-  window.addEventListener('scroll', () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      loadMorePosts();
-    }
-  });
+  // load more posts on scroll
+  // window.addEventListener('scroll', () => {
+  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  //     loadMorePosts();
+  //   }
+  // });
 });
 </script>

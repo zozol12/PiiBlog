@@ -23,12 +23,19 @@ const validate = (state: any): FormError[] => {
 const form = ref();
 
 const user = useSupabaseUser();
-const errorMsg = ref(null);
+const errorMsg = ref(undefined);
 const successMsg = ref(null);
 
 const client = useSupabaseClient<Database>();
 
-const submit = async () => {
+function handleThumbnailChange(event: Event) {
+  const target = event.target as HTMLInputElement;
+  if (target.files) {
+    state.value.thumbnailFile = target.files[0];
+  }
+}
+
+async function submit() {
   await form.value.validate();
 
   try {
@@ -76,30 +83,30 @@ const submit = async () => {
 
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-    <div class="bg-gray-800 rounded-lg p-8 w-96 space-y-6">
+    <div class="rounded-lg p-8 w-10/12 space-y-6">
       <h1 class="text-2xl font-semibold">Create a New Post</h1>
 
       <UForm ref="form" :validate="validate" :state="state" @submit.prevent="submit">
         <UFormGroup label="Name" name="name">
-          <UInput v-model="state.name" />
+          <UInput v-model="state.name"  placeholder="Name of your post. Make sure it's catchy!" />
         </UFormGroup>
-        <UFormGroup label="Slug" name="slug">
-          <UInput v-model="state.slug" />
+        <UFormGroup label="Slug" name="slug"  >
+          <UInput v-model="state.slug" placeholder="your-post-name-like-this-explanatory-not-catchy" />
         </UFormGroup>
         <UFormGroup label="Content" name="content">
-          <UTextarea resize v-model="state.content" />
+          <UTextarea resize v-model="state.content" placeholder="You can use markdown here!" />
         </UFormGroup>
         <div>
           <label class="block text-sm font-medium text-gray-400">Thumbnail</label>
           <input type="file" accept="image/*" @change="handleThumbnailChange" />
         </div>
         <UFormGroup label="Meta title" name="meta_title">
-          <UInput v-model="state.meta_title" />
+          <UInput v-model="state.meta_title"  placeholder="Meta title for browsers!" />
         </UFormGroup>
-        <UFormGroup label="Meta description" name="meta_description">
-          <UInput v-model="state.meta_description" />
+        <UFormGroup label="Meta description" name="meta_description" >
+          <UInput v-model="state.meta_description" placeholder="And meta description for browsers"/>
         </UFormGroup>
-        <UButton type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none">
+        <UButton type="submit" class="text-white font-semibold py-2 px-4 rounded-lg focus:outline-none">
           Create Post
         </UButton>
       </UForm>
