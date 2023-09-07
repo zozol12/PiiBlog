@@ -62,7 +62,7 @@ async function loadMorePosts() {
 
   const { data: newPosts, error } = await client
     .from('Posts')
-    .select('name, thumbnail, created_at, created_by')
+    .select('slug, name, thumbnail, created_at, created_by')
     .range(loadedPosts, loadedPosts + postLimit - 1)
     .order('created_at', { ascending: false });
 
@@ -74,7 +74,10 @@ async function loadMorePosts() {
       // No more posts to load
       hasMorePosts.value = false;
     } else {
+      // Append new posts to visiblePosts array
       visiblePosts.value = [...visiblePosts.value, ...newPosts];
+
+      // Increment loadedPosts counter
       loadedPosts += newPosts.length;
     }
   }

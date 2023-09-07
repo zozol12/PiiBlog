@@ -17,6 +17,7 @@
     "nuxt-mongoose": "^0.0.9"
   },
   "dependencies": {
+    "date-fns": "^2.30.0",
     "mongoose": "^7.5.0",
     "nuxt-server-utils": "^0.0.7"
   }
