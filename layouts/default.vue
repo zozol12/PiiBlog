@@ -19,7 +19,7 @@
               </li>
               <li>
                 <nuxt-link to="/privacy" class="hover:underline transition duration-300 ml-4">
-                  privacy policy
+                  privacy
                 </nuxt-link>
               </li>
             </ul>
@@ -104,12 +104,11 @@ const logout = () => {
 }
 
 useSeoMeta({
-  title: 'My Amazing Site',
-  ogTitle: 'My Amazing Site',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
-  ogImage: 'https://example.com/image.png',
-  twitterCard: 'summary_large_image'
+  title: 'PiiBlog',
+  ogTitle: 'PiiBlog',
+  description: 'PiiBlog. Created for demonstration purposes.',
+  ogDescription: 'PiiBlog. Created for demonstration purposes.',
+  ogImage: 'https://example.com/image.png'
 })
 </script>
 
