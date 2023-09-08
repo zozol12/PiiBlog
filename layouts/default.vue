@@ -64,10 +64,10 @@
           <a href="https://linkedin.com/in/mikolaj-szmalc" aria-label="Our linkedin profile" target="_blank" rel="noopener noreferrer">
             <Icon name="simple-icons:linkedin" />
           </a>
-          <a href="https://facebook.com/" target="_blank"  aria-label="Our facebook profile"  rel="noopener noreferrer">
+          <a href="https://facebook.com/" target="_blank" aria-label="Our facebook profile" rel="noopener noreferrer">
             <Icon name="simple-icons:facebook" />
           </a>
-          <a href="/rss.xml" target="_blank"  aria-label="Our RSS feed"  rel="noopener noreferrer">
+          <a href="/rss.xml" target="_blank" aria-label="Our RSS feed" rel="noopener noreferrer">
             <Icon name="simple-icons:rss" />
           </a>
         </div>
@@ -82,11 +82,11 @@
 </template>
 
 <script setup lang="ts">
-  useHead({
-    htmlAttrs: {
-      lang: 'en'
-    }
-  })
+useHead({
+  htmlAttrs: {
+    lang: 'en'
+  }
+})
 
 const colorMode = useColorMode()
 

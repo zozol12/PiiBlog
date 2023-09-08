@@ -22,7 +22,7 @@
         <ul class="list-disc pl-8">
           <li>
             <a
-              href="https://nuxtjs.org/"
+              href="https://nuxt.com/"
               class="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
@@ -38,7 +38,7 @@
           </li>
           <li>
             <a
-              href="https://nuxtlabs.com/ui"
+              href="https://ui.nuxtlabs.com/"
               class="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
@@ -59,7 +59,7 @@
             data storage and management.
           </li>
         </ul>
-        <NuxtImg src="/performance.png" class="mt-4"/>
+        <NuxtImg src="/performance.png" class="mt-4" />
       </main>
       <footer class="mt-6 text-right text-sm text-gray-200">
         <p>&copy; 2023 Mikołaj Szmalc</p>

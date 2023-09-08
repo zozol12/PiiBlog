@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/supabase',
-//    '@nuxtjs/html-validator',
+    //    '@nuxtjs/html-validator',
     'nuxt-icon',
     '@nuxt/image',
     '@nuxtjs/eslint-module'

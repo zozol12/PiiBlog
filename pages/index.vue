@@ -7,14 +7,14 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Placeholder for posts -->
 
-              <PostPlaceholder v-if="shouldShowPlaceholders" v-for="index in 6" :key="index" />
+            <PostPlaceholder v-for="index in 6" v-if="shouldShowPlaceholders" :key="index" />
 
-              <PostCard
-                v-for="(post, index) in visiblePosts"
-                :key="index"
-                :post="post"
-                :background-image-style="getBackgroundImageStyle(post.thumbnail)"
-              />
+            <PostCard
+              v-for="(post, index) in visiblePosts"
+              :key="index"
+              :post="post"
+              :background-image-style="getBackgroundImageStyle(post.thumbnail)"
+            />
           </div>
           <!-- Load More Button -->
           <div
