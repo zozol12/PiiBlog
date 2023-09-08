@@ -59,6 +59,7 @@
             data storage and management.
           </li>
         </ul>
+        <NuxtImg src="/performance.png" class="mt-4"/>
       </main>
       <footer class="mt-6 text-right text-sm text-gray-200">
         <p>&copy; 2023 Mikołaj Szmalc</p>
