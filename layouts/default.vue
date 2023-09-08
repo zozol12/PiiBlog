@@ -58,16 +58,16 @@
       <div class="container mx-auto flex justify-between items-center">
         <!-- Social UButtons -->
         <div class="flex space-x-4">
-          <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
+          <a href="https://x.com/" target="_blank" aria-label="Our X profile" rel="noopener noreferrer">
             <Icon name="simple-icons:x" />
           </a>
-          <a href="https://linkedin.com/in/mikolaj-szmalc" target="_blank" rel="noopener noreferrer">
+          <a href="https://linkedin.com/in/mikolaj-szmalc" aria-label="Our linkedin profile" target="_blank" rel="noopener noreferrer">
             <Icon name="simple-icons:linkedin" />
           </a>
-          <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer">
+          <a href="https://facebook.com/" target="_blank"  aria-label="Our facebook profile"  rel="noopener noreferrer">
             <Icon name="simple-icons:facebook" />
           </a>
-          <a href="/rss.xml" target="_blank" rel="noopener noreferrer">
+          <a href="/rss.xml" target="_blank"  aria-label="Our RSS feed"  rel="noopener noreferrer">
             <Icon name="simple-icons:rss" />
           </a>
         </div>
@@ -82,6 +82,12 @@
 </template>
 
 <script setup lang="ts">
+  useHead({
+    htmlAttrs: {
+      lang: 'en'
+    }
+  })
+
 const colorMode = useColorMode()
 
 const router = useRouter()
