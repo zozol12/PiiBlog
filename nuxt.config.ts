@@ -1,5 +1,5 @@
 import tailwindTypography from '@tailwindcss/typography'
-import colors from 'tailwindcss/colors';
+import colors from 'tailwindcss/colors'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -18,18 +18,21 @@ export default defineNuxtConfig({
         extend: {
           colors: {
             secondary: '#00ff00',
-            info: '#0000ff',
+            info: '#0000ff'
           }
-        },
-      },
-    },
+        }
+      }
+    }
   },
   modules: [
-    '@nuxt/ui', 
+    '@nuxt/ui',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/supabase',
-    '@nuxtjs/html-validator',
-],  
+//    '@nuxtjs/html-validator',
+    'nuxt-icon',
+    '@nuxt/image',
+    '@nuxtjs/eslint-module'
+  ],
   ui: {
     global: true,
     icons: 'all'
@@ -39,8 +42,8 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: '/login',
       callback: '/confirm',
-      exclude: ['/', '/post/*', '/register'], // remove register if not in development
+      exclude: ['/', '/post/*', '/register', '/about', '/privacy'] // remove register if not in development
     }
-  },
-  
+  }
+
 })

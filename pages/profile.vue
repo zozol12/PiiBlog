@@ -1,13 +1,19 @@
 <template>
   <div class=" shadow-2xl p-8">
-    <h1 class="text-3xl font-semibold mb-8">Profile</h1>
+    <h1 class="text-3xl font-semibold mb-8">
+      Profile
+    </h1>
     <div class="space-y-4">
       <UTabs :items="items">
         <template #item="{ item }">
           <UCard @submit.prevent="() => onSubmit(item.key === 'account' ? accountForm : passwordForm)">
             <template #header>
-              <h3 class="text-lg font-semibold leading-6 ">{{ item.label }}</h3>
-              <p class="mt-1 text-sm text-gray-400">{{ item.description }}</p>
+              <h3 class="text-lg font-semibold leading-6 ">
+                {{ item.label }}
+              </h3>
+              <p class="mt-1 text-sm text-gray-400">
+                {{ item.description }}
+              </p>
             </template>
             <div v-if="item.key === 'account'" class="space-y-3">
               <UFormGroup label="Email" name="email">
@@ -24,7 +30,7 @@
             </div>
             <template #footer>
               <UButton type="submit">
-                <label>Save {{ item.key === 'account' ? 'Account' : 'Password' }}</label>
+                Save {{ item.key === 'account' ? 'Account' : 'Password' }}
               </UButton>
             </template>
           </UCard>
@@ -35,15 +41,15 @@
       <div class="text-center">
         <NuxtLink to="/post/creator">
           <UButton class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
-            <label>Create New Post</label>
+            Create New Post
           </UButton>
         </NuxtLink>
       </div>
 
       <!-- Logout Button -->
       <div class="text-center">
-        <UButton @click="logout" color="red" class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
-          <label>Logout</label>
+        <UButton color="red" class="font-semibold py-2 px-4 rounded-lg focus:outline-none" @click="logout">
+          Logout
         </UButton>
       </div>
     </div>
@@ -51,39 +57,39 @@
 </template>
 
 <script setup>
-const router = useRouter();
-const user = useSupabaseUser();
+const router = useRouter()
+const user = useSupabaseUser()
 const state = ref({
-  email: user.value ? user.value.email : '',
-});
+  email: user.value ? user.value.email : ''
+})
 const items = [
   {
     key: 'account',
     label: 'Account',
-    description: 'Make changes to your account here. Click save when you\'re done.',
+    description: 'Make changes to your account here. Click save when you\'re done.'
   },
   {
     key: 'password',
     label: 'Password',
-    description: 'Change your password here. After saving, you\'ll be logged out.',
-  },
-];
-const accountForm = reactive({ email: state.email });
-const passwordForm = reactive({ currentPassword: '', newPassword: '' });
+    description: 'Change your password here. After saving, you\'ll be logged out.'
+  }
+]
+const accountForm = reactive({ email: state.email })
+const passwordForm = reactive({ currentPassword: '', newPassword: '' })
 
-const client = useSupabaseClient();
+const client = useSupabaseClient()
 
-async function onSubmit(form) {
-  console.log('Submitted form:', form);
+async function onSubmit (form) {
+  console.log('Submitted form:', form)
 };
 
-async function logout() {
+async function logout () {
   try {
-    const { error } = await client.auth.signOut();
-    if(error) throw error;
-    router.push('/login');
+    const { error } = await client.auth.signOut()
+    if (error) { throw error }
+    router.push('/login')
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 };
 </script>
