@@ -1,3 +1,6 @@
+import tailwindTypography from '@tailwindcss/typography'
+import colors from 'tailwindcss/colors';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: {
@@ -7,19 +10,36 @@ export default defineNuxtConfig({
       enabled: true
     }
   },
+  tailwindcss: {
+    config: {
+      content: [],
+      plugins: [tailwindTypography],
+      theme: {
+        extend: {
+          colors: {
+            secondary: '#00ff00',
+            info: '#0000ff',
+          }
+        },
+      },
+    },
+  },
   modules: [
-    '@nuxthq/ui', 
-    '@nuxtjs/supabase'
-],
+    '@nuxt/ui', 
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/supabase',
+    '@nuxtjs/html-validator',
+],  
   ui: {
-    global: true
+    global: true,
+    icons: 'all'
   },
   supabase: {
     redirect: true,
     redirectOptions: {
       login: '/login',
       callback: '/confirm',
-      exclude: ['/', '/register'], // remove register if not in development
+      exclude: ['/', '/post/*', '/register'], // remove register if not in development
     }
   },
   

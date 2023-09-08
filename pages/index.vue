@@ -1,59 +1,57 @@
 <template>
-    <div class="min-h-screen py-8">
-      <div class="container mx-auto">
-        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <!-- Blog Feed -->
-          <div class="md:w-3/4 space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <PostCard
-                v-for="(post, index) in visiblePosts"
-                :key="index"
-                :post="post"
-                :backgroundImageStyle="getBackgroundImageStyle(post.thumbnail)"
-              />
-            </div>
-            <!-- Load More Button -->
-            <div class="text-center">
-              <UButton
-                v-if="hasMorePosts"
-                @click="loadMorePosts"
-                :disabled="isLoading"
-                class=" font-semibold py-2 px-4 rounded-lg focus:outline-none"
-              >
-                {{ isLoading ? 'Loading...' : 'Load More' }}
-              </UButton>
-            </div>
+  <div class="py-8">
+    <div class="container mx-auto">
+      <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+        <!-- Blog Feed -->
+        <div class="md:w-3/4 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Placeholder for posts -->
+            <PostPlaceholder v-if="shouldShowPlaceholders" v-for="index in 6" :key="index" />
+            <PostCard v-for="(post, index) in visiblePosts" :key="index" :post="post"
+              :backgroundImageStyle="getBackgroundImageStyle(post.thumbnail)" />
           </div>
-  
-          <!-- Side Panel -->
-          <div class="md:w-1/4 space-y-4">
-            <div class="p-4 rounded-lg shadow-md">
-              <div class="text-center mb-4">
-                <div class="text-2xl font-semibold">Profile</div>
-              </div>
-              <!-- profile content here -->
+          <!-- Load More Button -->
+          <div class="text-center">
+            <UButton v-if="hasMorePosts" @click="loadMorePosts" :disabled="isLoading"
+              class=" font-semibold py-2 px-4 rounded-lg focus:outline-none">
+              <label>{{ isLoading ? 'Loading...' : 'Load More' }}</label>
+            </UButton>
+          </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="bg-gray-800 md:w-1/4 space-y-4 max-h-min shadow-2xl rounded-xl">
+          <div class="p-4 rounded-lg shadow-md">
+            <div class="text-center mb-4">
+              <div class="text-2xl font-semibold text-sec text-white">Profile</div>
             </div>
-  
-            <div class="p-4 rounded-lg shadow-md">
-              <div class="text-center mb-4">
-                <div class="text-2xl font-semibold">Settings</div>
-              </div>
-              <!-- settings content here -->
+            <!-- profile content here -->
+          </div>
+
+          <div class="p-4 rounded-lg shadow-md">
+            <div class="text-center mb-4">
+              <div class="text-2xl font-semibold text-white">Settings</div>
             </div>
+            <!-- settings content here -->
           </div>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script setup lang="ts">
-const client = useSupabaseClient();
+<script setup lang="ts">
+
+import type { Database } from '~/utils/supabase'
+
+const client = useSupabaseClient<Database>();
 const postLimit: number = 6;
 
 const visiblePosts: Ref<any[]> = ref([]);
-let loadedPosts: number = 0;
-let isLoading: Ref<boolean> = ref(false);
-let hasMorePosts: Ref<boolean> = ref(true);
+const loadedPosts: Ref<number> = ref(0);
+const isLoading: Ref<boolean> = ref(false);
+const hasMorePosts: Ref<boolean> = ref(true);
+
 
 async function loadMorePosts() {
   if (isLoading.value || !hasMorePosts.value) return;
@@ -63,7 +61,7 @@ async function loadMorePosts() {
   const { data: newPosts, error } = await client
     .from('Posts')
     .select('slug, name, thumbnail, created_at, created_by')
-    .range(loadedPosts, loadedPosts + postLimit - 1)
+    .range(loadedPosts.value, loadedPosts.value + postLimit - 1)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -78,7 +76,12 @@ async function loadMorePosts() {
       visiblePosts.value = [...visiblePosts.value, ...newPosts];
 
       // Increment loadedPosts counter
-      loadedPosts += newPosts.length;
+      loadedPosts.value += newPosts.length;
+
+      // If newPosts.length is less than postLimit, then there are no more posts to load
+      if (newPosts.length < postLimit) {
+        hasMorePosts.value = false;
+      }
     }
   }
 
@@ -96,6 +99,11 @@ const getBackgroundImageStyle = (thumbnail_name: string) => {
   }
   return null;
 };
+
+const shouldShowPlaceholders = computed(() => {
+  // Return true to show placeholders if loadedPosts is 0
+  return loadedPosts.value === 0;
+});
 
 onMounted(() => {
   // load more posts on scroll

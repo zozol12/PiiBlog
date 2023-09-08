@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen text-white p-8">
+  <div class=" shadow-2xl p-8">
     <h1 class="text-3xl font-semibold mb-8">Profile</h1>
     <div class="space-y-4">
       <UTabs :items="items">
         <template #item="{ item }">
           <UCard @submit.prevent="() => onSubmit(item.key === 'account' ? accountForm : passwordForm)">
             <template #header>
-              <h3 class="text-lg font-semibold leading-6 text-white">{{ item.label }}</h3>
+              <h3 class="text-lg font-semibold leading-6 ">{{ item.label }}</h3>
               <p class="mt-1 text-sm text-gray-400">{{ item.description }}</p>
             </template>
             <div v-if="item.key === 'account'" class="space-y-3">
@@ -24,7 +24,7 @@
             </div>
             <template #footer>
               <UButton type="submit">
-                Save {{ item.key === 'account' ? 'Account' : 'Password' }}
+                <label>Save {{ item.key === 'account' ? 'Account' : 'Password' }}</label>
               </UButton>
             </template>
           </UCard>
@@ -34,16 +34,16 @@
       <!-- Create Post Button -->
       <div class="text-center">
         <NuxtLink to="/post/creator">
-          <UButton class=" text-white font-semibold py-2 px-4 rounded-lg focus:outline-none">
-            Create New Post
+          <UButton class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
+            <label>Create New Post</label>
           </UButton>
         </NuxtLink>
       </div>
 
       <!-- Logout Button -->
       <div class="text-center">
-        <UButton @click="logout" color="red" class=" text-white font-semibold py-2 px-4 rounded-lg focus:outline-none">
-          Logout
+        <UButton @click="logout" color="red" class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
+          <label>Logout</label>
         </UButton>
       </div>
     </div>
@@ -79,7 +79,8 @@ async function onSubmit(form) {
 
 async function logout() {
   try {
-    await client.auth.signOut();
+    const { error } = await client.auth.signOut();
+    if(error) throw error;
     router.push('/login');
   } catch (error) {
     console.error(error);

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormError } from '@nuxthq/ui/dist/runtime/types'
 
-import type { Database } from '~/types'
+import type { Database } from '~/utils/supabase'
 
 const router = useRouter();
 
@@ -58,6 +58,11 @@ const user = useSupabaseUser();
 const errorMsg = ref(undefined);
 const successMsg = ref(null);
 
+// redirect to login page if user is not authenticated
+if (!user.value) {
+  router.push('/login');
+}
+
 const client = useSupabaseClient<Database>();
 
 function handleThumbnailChange(event: Event) {
@@ -85,51 +90,52 @@ async function submit() {
       console.log(thumbnailData)
       thumbnailUrl = thumbnailData?.Key;
     }
+    const postData = {
+      name: state.value.name,
+      slug: state.value.slug,
+      content: state.value.content,
+      thumbnail: thumbnailUrl,
+      meta_title: state.value.meta_title,
+      meta_description: state.value.meta_description,
+      created_by: user.value.email,
+    };
     if (mode === 'edit') {
 
       const { data, error } = await client
         .from('Posts')
-        .update(
-          {
-            name: state.value.name,
-            slug: state.value.slug,
-            content: state.value.content,
-            thumbnail: thumbnailUrl,
-            meta_title: state.value.meta_title,
-            meta_description: state.value.meta_description,
-          })
+        .update(postData)
         .eq('slug', postSlug)
         .select();
-
+      console.log(data)
+      console.log(error)
       if (error) {
         throw error;
       }
+      successMsg.value = 'Post updated successfully';
     } else {
       const { data, error } = await client
         .from('Posts')
-        .insert([
-          {
-            name: state.value.name,
-            slug: state.value.slug,
-            content: state.value.content,
-            thumbnail: thumbnailUrl,
-            meta_title: state.value.meta_title,
-            meta_description: state.value.meta_description,
-            created_by: user.value.email,
-          },
-        ])
+        .insert(postData)
         .select();
 
       if (error) {
         throw error;
       }
+      successMsg.value = 'Post created successfully';
     }
-    successMsg.value = 'Post created successfully';
   } catch (error) {
     console.error(error);
     errorMsg.value = error.message || 'An error occurred while creating the post';
   }
 };
+
+// Markdown preview logic
+const markdown = useMarkdownUtils();
+
+const renderedMarkdown = computed(() => {
+  // Render the markdown content
+  return markdown.render(state.value.content);
+});
 
 onMounted(() => {
   if (mode === 'edit') {
@@ -144,22 +150,34 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-    <div class="rounded-lg p-8 w-10/12 space-y-6">
-      <h1 class="text-2xl font-semibold">{{ mode === 'edit' ? 'Edit Post' : 'Create a New Post' }}</h1>
-
-      <UForm ref="form" :validate="validate" :state="state" @submit.prevent="submit">
+  <div class="shadow-2xl p-8 rounded-xl">
+    <h1 class="text-3xl font-semibold mb-8">Post Editor</h1>
+    <UCard class="shadow-2xl rounded-xl">
+      <!-- UForm for Post Editing -->
+      <UForm class="space-y-3" ref="form" :validate="validate" :state="state" @submit.prevent="submit">
         <UFormGroup label="Name" name="name">
           <UInput v-model="state.name" placeholder="Name of your post. Make sure it's catchy!" />
         </UFormGroup>
         <UFormGroup label="Slug" name="slug">
           <UInput v-model="state.slug" placeholder="your-post-name-like-this-explanatory-not-catchy" />
         </UFormGroup>
-        <UFormGroup label="Content" name="content">
-          <UTextarea resize v-model="state.content" placeholder="You can use markdown here!" />
-        </UFormGroup>
+        <div class="flex">
+          <!-- Text Input Section (Left) -->
+          <div class="w-1/2 p-2">
+            <UFormGroup label="Content" name="content">
+              <UTextarea resize v-model="state.content"
+                placeholder="You can use markdown here... And HTML... And TailwindCSS..." />
+            </UFormGroup>
+          </div>
+
+          <!-- Markdown Preview Section (Right) -->
+          <div class="w-1/2 p-2">
+            <label>Content Preview</label>
+            <div class="bg-gray" v-html="renderedMarkdown"></div>
+          </div>
+        </div>
         <div>
-          <label class="block text-sm font-medium text-gray-400">Thumbnail</label>
+          <label class="block text-sm font-medium">Thumbnail</label>
           <input type="file" accept="image/*" @change="handleThumbnailChange" />
         </div>
         <UFormGroup label="Meta title" name="meta_title">
@@ -168,9 +186,9 @@ onMounted(() => {
         <UFormGroup label="Meta description" name="meta_description">
           <UInput v-model="state.meta_description" placeholder="And meta description for browsers" />
         </UFormGroup>
-        <UButton type="submit" class="text-white font-semibold py-2 px-4 rounded-lg focus:outline-none">
-          {{ mode === 'edit' ? 'Update Post' : 'Create Post' }}
-        </UButton>
+  <UButton block type="submit" class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
+    <label>{{ mode === 'edit' ? 'Update Post' : 'Create Post' }}</label>
+  </UButton>
       </UForm>
 
       <div v-if="errorMsg" class="text-red-500">
@@ -180,6 +198,6 @@ onMounted(() => {
       <div v-if="successMsg" class="text-green-500">
         {{ successMsg }}
       </div>
-    </div>
+    </UCard>
   </div>
 </template>

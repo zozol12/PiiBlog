@@ -1,6 +1,6 @@
 <template>
   <router-link :to="`/post/${post.slug}`">
-    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+    <div class="bg-white rounded-lg overflow-hidden shadow-2xl">
       <div class="relative h-40 md:h-64">
         <div :style="backgroundImageStyle" class="h-full bg-cover bg-center absolute inset-0"></div>
         <div class="absolute inset-0 bg-black opacity-50"></div>
