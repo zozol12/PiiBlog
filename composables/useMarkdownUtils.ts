@@ -11,6 +11,7 @@ import MarkdownItAttrs from 'markdown-it-attrs'
 export const useMarkdownUtils = () => {
   const md = new MarkdownIt({
     html: true,
+    xhtmlOut: true,
     linkify: true,
     typographer: true,
     breaks: true

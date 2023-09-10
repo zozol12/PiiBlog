@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <script setup lang="ts">
 import type { FormError } from '@nuxthq/ui/dist/runtime/types'
 
@@ -7,11 +8,20 @@ const router = useRouter()
 
 const mode: string = router.currentRoute.value.query.mode as string || 'create'
 const postSlug: string = router.currentRoute.value.query.slug as string || ''
-
-const state = ref({
+interface PostData {
+  name: string;
+  slug: string;
+  thumbnailFile: File | null;
+  thumbnailPath: string;
+  content: string;
+  meta_title: string;
+  meta_description: string;
+}
+const state = ref<PostData>({
   name: '',
   slug: '',
   content: '',
+  thumbnailPath: 'default',
   thumbnailFile: null,
   meta_title: '',
   meta_description: ''
@@ -30,15 +40,16 @@ async function fetchPostData () {
     }
 
     // Populate form fields with fetched data
-    state.value.name = postData.name
-    state.value.slug = postData.slug
-    state.value.content = postData.content
-    state.value.meta_title = postData.meta_title
-    state.value.meta_description = postData.meta_description
-
-    // You may need additional logic to handle thumbnail data
+    if (postData) {
+      state.value.name = postData.name
+      state.value.slug = postData.slug
+      state.value.thumbnailPath = postData.thumbnail
+      state.value.content = postData.content
+      state.value.meta_title = postData.meta_title
+      state.value.meta_description = postData.meta_description
+    }
   } catch (error) {
-    console.error(error)
+    // console.error(error)
     errorMsg.value = error.message || 'An error occurred while fetching post data'
   }
 }
@@ -55,6 +66,7 @@ const form = ref()
 const user = useSupabaseUser()
 const errorMsg = ref(undefined)
 const successMsg = ref(null)
+const isLoading = ref(false)
 
 // redirect to login page if user is not authenticated
 if (!user.value) {
@@ -63,36 +75,37 @@ if (!user.value) {
 
 const client = useSupabaseClient<Database>()
 
-function handleThumbnailChange (event: Event) {
+async function handleThumbnailChange (event: Event) {
   const target = event.target as HTMLInputElement
   if (target.files) {
     state.value.thumbnailFile = target.files[0]
+    state.value.thumbnailPath = state.value.thumbnailFile.name
+    // Upload the thumbnail to Supabase storage
+    const { data: thumbnailData, error: thumbnailError } = await client.storage
+      .from('thumbnails')
+      .upload(state.value.thumbnailPath, state.value.thumbnailFile)
+
+    if (thumbnailError) {
+      errorMsg.value = 'Resource with the same name exists already! Using the one that was already uploaded...'
+    }
   }
+}
+
+async function removePost () {
+  const { data, error } = await client.from('Posts').delete().eq('slug', postSlug)
+
+  router.push('/')
 }
 
 async function submit () {
   await form.value.validate()
-
+  isLoading.value = true
   try {
-    let thumbnailUrl = 'default'
-
-    if (state.value.thumbnailFile) {
-      // Upload the thumbnail to Supabase storage
-      const { data: thumbnailData, error: thumbnailError } = await client.storage
-        .from('thumbnails')
-        .upload(state.value.thumbnailFile.name, state.value.thumbnailFile)
-
-      if (thumbnailError) {
-        throw thumbnailError
-      }
-      console.log(thumbnailData)
-      thumbnailUrl = thumbnailData?.Key
-    }
     const postData = {
       name: state.value.name,
       slug: state.value.slug,
       content: state.value.content,
-      thumbnail: thumbnailUrl,
+      thumbnail: state.value.thumbnailPath,
       meta_title: state.value.meta_title,
       meta_description: state.value.meta_description,
       created_by: user.value.email
@@ -103,31 +116,25 @@ async function submit () {
         .update(postData)
         .eq('slug', postSlug)
         .select()
-      console.log(data)
-      console.log(error)
-      if (error) {
-        throw error
-      }
-      successMsg.value = 'Post updated successfully'
+      if (error) { throw error } else { successMsg.value = 'Post updated successfully' }
     } else {
       const { data, error } = await client
         .from('Posts')
         .insert(postData)
         .select()
-
-      if (error) {
-        throw error
-      }
-      successMsg.value = 'Post created successfully'
+      if (error) { throw error } else { successMsg.value = 'Post created successfully' }
     }
-  } catch (error) {
-    console.error(error)
+  } catch (error: any) {
+    // console.error(error)
     errorMsg.value = error.message || 'An error occurred while creating the post'
   }
+  isLoading.value = false
 };
 
 // Markdown preview logic
 const markdown = useMarkdownUtils()
+
+const storage = useStorageUtils()
 
 const renderedMarkdown = computed(() => {
   // Render the markdown content
@@ -142,6 +149,12 @@ onMounted(() => {
     }
     // Fetch data only if in edit mode and postSlug is provided
     fetchPostData()
+  } else if (mode === 'remove') {
+    if (!postSlug) {
+      // If in remove mode but no postSlug is provided, redirect to home page
+      router.push('/')
+    }
+    removePost()
   }
 })
 </script>
@@ -180,8 +193,11 @@ onMounted(() => {
         </div>
         <div>
           <label class="block text-sm font-medium">Thumbnail
-            <input type="file" accept="image/*" @change="handleThumbnailChange">
+
+            <NuxtImg :src="storage.getThumbnailUrl(state.thumbnailPath)" class="max-h-12 m-1" /> {{ state.thumbnailPath }}
           </label>
+
+          <input type="file" accept="image/*" @change="handleThumbnailChange">
         </div>
         <UFormGroup label="Meta title" name="meta_title">
           <UInput v-model="state.meta_title" placeholder="Meta title for browsers!" />
@@ -189,7 +205,7 @@ onMounted(() => {
         <UFormGroup label="Meta description" name="meta_description">
           <UInput v-model="state.meta_description" placeholder="And meta description for browsers" />
         </UFormGroup>
-        <UButton block type="submit" class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
+        <UButton block type="submit" :loading="isLoading" class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
           {{ mode === 'edit' ? 'Update Post' : 'Create Post' }}
         </UButton>
       </UForm>

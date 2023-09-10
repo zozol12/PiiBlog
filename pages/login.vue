@@ -42,8 +42,6 @@
 </template>
 
 <script setup lang="ts">
-
-const router = useRouter()
 const state = ref({
   email: '',
   password: ''
@@ -51,18 +49,12 @@ const state = ref({
 const errorMsg = ref(null)
 const successMsg = ref(null)
 const isLoading = ref(false)
-const client = useSupabaseClient()
 const form = ref()
 
 async function signIn () {
   isLoading.value = true
   try {
-    const { error } = await client.auth.signInWithPassword({
-      email: state.value.email,
-      password: state.value.password
-    })
-    if (error) { throw error }
-    router.push('/profile')
+    await useLoginUtils().signIn(state.value.email, state.value.password)
   } catch (error) {
     errorMsg.value = error.message || 'An error occurred while logging in'
   }

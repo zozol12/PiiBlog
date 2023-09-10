@@ -15,11 +15,7 @@ const form = ref()
 async function signUp () {
   isLoading.value = true
   try {
-    // Do something with state.value
-    const { data, error } = await client.auth.signUp({
-      email: state.value.email, password: state.value.password
-    })
-    if (error) { throw error }
+    await useLoginUtils().signUp(state.value.email, state.value.password)
     successMsg.value = 'Check your email to confirm'
   } catch (error) {
     errorMsg.value = error.message

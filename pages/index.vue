@@ -13,7 +13,7 @@
               v-for="(post, index) in visiblePosts"
               :key="index"
               :post="post"
-              :background-image-style="getBackgroundImageStyle(post.thumbnail)"
+              :background-image-style="storage.getBackgroundImageStyle(post.thumbnail)"
             />
           </div>
           <!-- Load More Button -->
@@ -82,7 +82,7 @@ async function loadMorePosts () {
 
   if (error) {
     // Handle error
-    console.error(error)
+    // console.error(error)
   } else if (newPosts.length === 0) {
     // No more posts to load
     hasMorePosts.value = false
@@ -105,14 +105,7 @@ async function loadMorePosts () {
 // Initial load
 loadMorePosts()
 
-const getBackgroundImageStyle = (thumbnailName: string) => {
-  if (thumbnailName) {
-    const storage = client.storage.from('thumbnails')
-    const backgroundImageUrl = storage.getPublicUrl(thumbnailName).data.publicUrl
-    return { backgroundImage: `url('${backgroundImageUrl}')` }
-  }
-  return null
-}
+const storage = useStorageUtils()
 
 const shouldShowPlaceholders = computed(() => {
   // Return true to show placeholders if loadedPosts is 0

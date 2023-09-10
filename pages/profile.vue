@@ -17,47 +17,42 @@
             </template>
             <div v-if="item.key === 'account'" class="space-y-3">
               <UFormGroup label="Email" name="email">
-                <UInput v-model="accountForm.email" />
+                <UInput v-model="accountForm.email" disabled />
               </UFormGroup>
             </div>
             <div v-else-if="item.key === 'password'" class="space-y-3">
               <UFormGroup label="Current Password" name="current" required>
-                <UInput v-model="passwordForm.currentPassword" type="password" required />
+                <UInput v-model="passwordForm.currentPassword" type="password" disabled required />
               </UFormGroup>
               <UFormGroup label="New Password" name="new" required>
-                <UInput v-model="passwordForm.newPassword" type="password" required />
+                <UInput v-model="passwordForm.newPassword" type="password" disabled required />
               </UFormGroup>
             </div>
             <template #footer>
-              <UButton type="submit">
-                Save {{ item.key === 'account' ? 'Account' : 'Password' }}
-              </UButton>
+              <div class="flex justify-between">
+                <UButton disabled type="submit">
+                  Save {{ item.key === 'account' ? 'Account' : 'Password' }}
+                </UButton>
+
+                <NuxtLink to="/post/creator">
+                  <UButton class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
+                    Create New Post
+                  </UButton>
+                </NuxtLink>
+
+                <UButton color="red" class="font-semibold py-2 px-4 rounded-lg focus:outline-none" @click="logout">
+                  Logout
+                </UButton>
+              </div>
             </template>
           </UCard>
         </template>
       </UTabs>
-
-      <!-- Create Post Button -->
-      <div class="text-center">
-        <NuxtLink to="/post/creator">
-          <UButton class="font-semibold py-2 px-4 rounded-lg focus:outline-none">
-            Create New Post
-          </UButton>
-        </NuxtLink>
-      </div>
-
-      <!-- Logout Button -->
-      <div class="text-center">
-        <UButton color="red" class="font-semibold py-2 px-4 rounded-lg focus:outline-none" @click="logout">
-          Logout
-        </UButton>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-const router = useRouter()
 const user = useSupabaseUser()
 const state = ref({
   email: user.value ? user.value.email : ''
@@ -77,19 +72,11 @@ const items = [
 const accountForm = reactive({ email: state.email })
 const passwordForm = reactive({ currentPassword: '', newPassword: '' })
 
-const client = useSupabaseClient()
-
-async function onSubmit (form) {
-  console.log('Submitted form:', form)
-};
-
 async function logout () {
   try {
-    const { error } = await client.auth.signOut()
-    if (error) { throw error }
-    router.push('/login')
+    await useLoginUtils().signOut()
   } catch (error) {
-    console.error(error)
+    // console.error(error)
   }
 };
 </script>

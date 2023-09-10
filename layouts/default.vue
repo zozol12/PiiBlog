@@ -32,11 +32,7 @@
             <Icon name="heroicons:user-solid" /> Profile
           </UButton>
 
-          <UButton
-            aria-label="Theme"
-            class="py-2 px-4 mr-4"
-            @click="isDark = !isDark"
-          >
+          <UButton aria-label="Theme" class="py-2 px-4 mr-4" @click="isDark = !isDark">
             <Icon :name="isDark ? 'heroicons:moon-solid' : 'heroicons:sun-solid'" />
           </UButton>
           <div v-if="user">
@@ -57,11 +53,16 @@
     <footer class="bg-gray-800 p-4">
       <div class="container mx-auto flex justify-between items-center">
         <!-- Social UButtons -->
-        <div class="flex space-x-4">
+        <div class="flex space-x-4 text-white">
           <a href="https://x.com/" target="_blank" aria-label="Our X profile" rel="noopener noreferrer">
             <Icon name="simple-icons:x" />
           </a>
-          <a href="https://linkedin.com/in/mikolaj-szmalc" aria-label="Our linkedin profile" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://linkedin.com/in/mikolaj-szmalc"
+            aria-label="Our linkedin profile"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Icon name="simple-icons:linkedin" />
           </a>
           <a href="https://facebook.com/" target="_blank" aria-label="Our facebook profile" rel="noopener noreferrer">
@@ -93,7 +94,7 @@ const colorMode = useColorMode()
 const router = useRouter()
 
 const user = useSupabaseUser()
-
+const storage = useStorageUtils()
 const isDark = computed({
   get () {
     return colorMode.value === 'dark'
@@ -103,10 +104,12 @@ const isDark = computed({
   }
 })
 
-const isAuthenticated = ref(false) // Replace with your authentication logic
-
-const logout = () => {
-  isAuthenticated.value = false
+async function logout () {
+  try {
+    await useLoginUtils().signOut()
+  } catch (error) {
+    // console.error(error)
+  }
 }
 
 useSeoMeta({
@@ -114,7 +117,7 @@ useSeoMeta({
   ogTitle: 'PiiBlog',
   description: 'PiiBlog. Created for demonstration purposes.',
   ogDescription: 'PiiBlog. Created for demonstration purposes.',
-  ogImage: 'https://example.com/image.png'
+  ogImage: storage.getThumbnailUrl()
 })
 </script>
 
