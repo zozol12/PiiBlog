@@ -35,7 +35,7 @@ export default defineNuxtConfig({
   ],
   ui: {
     global: true,
-    icons: "all",
+    icons: ["simple-icons", "hero-icons"],
   },
   supabase: {
     redirect: true,
