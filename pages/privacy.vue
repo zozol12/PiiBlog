@@ -1,7 +1,4 @@
 <template>
-  <h1>
-    We Collect <b>NO</b> Information about you.
-  </h1>
+  <h1>We Collect <b>NO</b> Information about you.</h1>
 </template>
-<script>
-</script>
+<script setup lang="ts"></script>

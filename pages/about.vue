@@ -1,24 +1,19 @@
 <template>
-  <div class=" py-8">
-    <UCard class="max-w-2xl mx-auto p-4 shadow-lg rounded-lg">
-      <header class="text-center mb-6">
-        <h1 class="text-3xl font-semibold">
-          About Me
-        </h1>
+  <div class="py-8">
+    <UCard class="mx-auto max-w-2xl rounded-lg p-4 shadow-lg">
+      <header class="mb-6 text-center">
+        <h1 class="text-3xl font-semibold">About Me</h1>
       </header>
       <main>
+        <p>Hello, I'm Mikołaj Szmalc, and welcome to my demonstration blog!</p>
+        <br />
         <p>
-          Hello, I'm Mikołaj Szmalc, and welcome to my demonstration blog!
+          This blog serves as a showcase of my work and skills in web
+          development. It's designed to be lightning-fast, utilizing modern
+          technologies to deliver a smooth and responsive experience.
         </p>
-        <br>
-        <p>
-          This blog serves as a showcase of my work and skills in web development. It's designed to be
-          lightning-fast, utilizing modern technologies to deliver a smooth and responsive experience.
-        </p>
-        <br>
-        <p>
-          I've built this blog using a stack that includes:
-        </p>
+        <br />
+        <p>I've built this blog using a stack that includes:</p>
         <ul class="list-disc pl-8">
           <li>
             <a
@@ -26,7 +21,9 @@
               class="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
-            >Nuxt 3</a> for building fast and efficient web applications.
+              >Nuxt 3</a
+            >
+            for building fast and efficient web applications.
           </li>
           <li>
             <a
@@ -34,7 +31,9 @@
               class="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
-            >Tailwind CSS</a> for a sleek and responsive design.
+              >Tailwind CSS</a
+            >
+            for a sleek and responsive design.
           </li>
           <li>
             <a
@@ -42,7 +41,9 @@
               class="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
-            >NuxtLabs UI</a> for UI components to enhance the user experience.
+              >NuxtLabs UI</a
+            >
+            for UI components to enhance the user experience.
           </li>
           <li>
             <a
@@ -50,13 +51,16 @@
               class="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
-            >Supabase</a> w/<a
+              >Supabase</a
+            >
+            w/<a
               href="https://www.postgresql.org/"
               class="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
-            >Postgres</a> for
-            data storage and management.
+              >Postgres</a
+            >
+            for data storage and management.
           </li>
         </ul>
         <NuxtImg src="/performance.png" class="mt-4" />
@@ -67,6 +71,4 @@
     </UCard>
   </div>
 </template>
-<script setup>
-
-</script>
+<script setup></script>

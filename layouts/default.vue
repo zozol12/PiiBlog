@@ -1,24 +1,29 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-gray-800 text-white p-4 space-x-4 m-4 rounded-xl">
-      <div class="container mx-auto flex justify-between">
-        <!-- Left side Header -->
-        <div class="flex items-center ml-4">
+  <div class="flex min-h-screen flex-col">
+    <header class="m-4 space-x-4 rounded-xl bg-gray-800 p-4 text-white">
+      <div
+        class="container mx-auto flex flex-col items-center justify-between md:flex-row"
+      >
+        <!-- Left side Header (Logo and Navigation) -->
+        <div class="flex items-center">
           <h1 class="text-2xl font-semibold">
-            <nuxt-link to="/">
-              PiiBlog
-            </nuxt-link>
+            <nuxt-link to="/"> {{ config.blogName }} </nuxt-link>
           </h1>
-          <nav>
+          <nav class="md:ml-4">
             <ul class="flex">
               <li>
-                <nuxt-link to="/about" class="hover:underline transition duration-300 ml-4">
+                <nuxt-link
+                  to="/about"
+                  class="ml-4 transition duration-300 hover:underline"
+                >
                   about
                 </nuxt-link>
               </li>
               <li>
-                <nuxt-link to="/privacy" class="hover:underline transition duration-300 ml-4">
+                <nuxt-link
+                  to="/privacy"
+                  class="ml-4 transition duration-300 hover:underline"
+                >
                   privacy
                 </nuxt-link>
               </li>
@@ -26,17 +31,30 @@
           </nav>
         </div>
 
-        <!-- Right side Header -->
-        <div class="flex items-center ml-4">
-          <UButton v-if="user" class="py-2 px-4 mr-4" @click="router.push('/profile')">
+        <!-- Search Input (Always visible) -->
+        <SearchInput />
+
+        <!-- Right side Header (Buttons and Theme Toggle) -->
+        <div class="mt-4 flex items-center md:mt-0">
+          <UButton
+            v-if="user"
+            class="mr-4 px-4 py-2"
+            @click="router.push('/profile')"
+          >
             <Icon name="heroicons:user-solid" /> Profile
           </UButton>
 
-          <UButton aria-label="Theme" class="py-2 px-4 mr-4" @click="isDark = !isDark">
-            <Icon :name="isDark ? 'heroicons:moon-solid' : 'heroicons:sun-solid'" />
+          <UButton
+            aria-label="Theme"
+            class="mr-4 px-4 py-2"
+            @click="isDark = !isDark"
+          >
+            <Icon
+              :name="isDark ? 'heroicons:moon-solid' : 'heroicons:sun-solid'"
+            />
           </UButton>
           <div v-if="user">
-            <UButton color="red" class="py-2 px-4 mr-4" @click="logout">
+            <UButton color="red" class="px-4 py-2" @click="logout">
               <Icon name="heroicons:lock-closed-solid" /> Logout
             </UButton>
           </div>
@@ -51,10 +69,15 @@
 
     <!-- Footer -->
     <footer class="bg-gray-800 p-4">
-      <div class="container mx-auto flex justify-between items-center">
+      <div class="container mx-auto flex items-center justify-between">
         <!-- Social UButtons -->
         <div class="flex space-x-4 text-white">
-          <a href="https://x.com/" target="_blank" aria-label="Our X profile" rel="noopener noreferrer">
+          <a
+            href="https://x.com/"
+            target="_blank"
+            aria-label="Our X profile"
+            rel="noopener noreferrer"
+          >
             <Icon name="simple-icons:x" />
           </a>
           <a
@@ -65,16 +88,26 @@
           >
             <Icon name="simple-icons:linkedin" />
           </a>
-          <a href="https://facebook.com/" target="_blank" aria-label="Our facebook profile" rel="noopener noreferrer">
+          <a
+            href="https://facebook.com/"
+            target="_blank"
+            aria-label="Our facebook profile"
+            rel="noopener noreferrer"
+          >
             <Icon name="simple-icons:facebook" />
           </a>
-          <a href="/rss.xml" target="_blank" aria-label="Our RSS feed" rel="noopener noreferrer">
+          <a
+            href="/rss.xml"
+            target="_blank"
+            aria-label="Our RSS feed"
+            rel="noopener noreferrer"
+          >
             <Icon name="simple-icons:rss" />
           </a>
         </div>
 
         <!-- Copyright -->
-        <p class="text-gray-200">
+        <p v-if="config.copyRightNotice" class="text-gray-200">
           &copy; 2023 PiiNut
         </p>
       </div>
@@ -85,40 +118,54 @@
 <script setup lang="ts">
 useHead({
   htmlAttrs: {
-    lang: 'en'
-  }
-})
-
-const colorMode = useColorMode()
-
-const router = useRouter()
-
-const user = useSupabaseUser()
-const storage = useStorageUtils()
-const isDark = computed({
-  get () {
-    return colorMode.value === 'dark'
+    lang: "en",
   },
-  set () {
-    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-  }
-})
+});
+const config = useConfig();
+const colorMode = useColorMode();
 
-async function logout () {
+const router = useRouter();
+
+const user = useSupabaseUser();
+const storage = useStorageUtils();
+const isDark = computed({
+  get() {
+    return colorMode.value === "dark";
+  },
+  set() {
+    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+  },
+});
+
+async function logout() {
   try {
-    await useLoginUtils().signOut()
+    await useSupabase().signOut();
   } catch (error) {
     // console.error(error)
   }
 }
 
-useSeoMeta({
-  title: 'PiiBlog',
-  ogTitle: 'PiiBlog',
-  description: 'PiiBlog. Created for demonstration purposes.',
-  ogDescription: 'PiiBlog. Created for demonstration purposes.',
-  ogImage: storage.getThumbnailUrl()
-})
+const route = useRoute();
+
+watch(
+  () => route.fullPath,
+  (newRoute) => {
+    // format title to look a little good :>
+    let title = "";
+    if (newRoute !== "/") {
+      title = newRoute.replaceAll("/", " | ");
+    }
+
+    useSeoMeta({
+      title: `${config.blogName} ${title}`,
+      ogTitle: `${config.blogName} ${title}`,
+      description: config.blogDesc,
+      ogDescription: config.blogDesc,
+      ogImage: storage.getThumbnailUrl(),
+    });
+  },
+  { immediate: true },
+);
 </script>
 
 <style>

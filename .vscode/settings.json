@@ -1,11 +1,11 @@
 {
-    "nuxt.isNuxtApp": false,
-    "files.associations": {
-        "*.css": "tailwindcss"
-    },
-    "editor.quickSuggestions": {
-        "strings": true
-    },
-    "editor.tabCompletion": "on",
-    "emmet.triggerExpansionOnTab": true
+  "nuxt.isNuxtApp": false,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.tabCompletion": "on",
+  "emmet.triggerExpansionOnTab": true
 }
