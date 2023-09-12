@@ -1,6 +1,8 @@
 <template>
   <div class="py-8">
-    <UCard class="animate-in zoom-in duration-700 mx-auto max-w-2xl rounded-lg p-4 shadow-lg">
+    <UCard
+      class="animate-in zoom-in mx-auto max-w-2xl rounded-lg p-4 shadow-lg duration-700"
+    >
       <header class="mb-6 text-center">
         <h1 class="text-3xl font-semibold">About Me</h1>
       </header>

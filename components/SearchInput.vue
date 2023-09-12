@@ -5,6 +5,7 @@
     placeholder="Search Blog..."
     icon="i-heroicons-magnifying-glass-20-solid"
     :ui="{ icon: { trailing: { pointer: '' } } }"
+    class="xs:m-2"
     @keydown.enter="handleSubmit"
   >
     <template #trailing>

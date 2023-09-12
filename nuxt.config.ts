@@ -12,12 +12,13 @@ export default defineNuxtConfig({
   tailwindcss: {
     config: {
       content: [],
-      plugins: [
-        tailwindTypography, 
-        tailwindAnimate
-      ],
+      plugins: [tailwindTypography, tailwindAnimate],
       theme: {
+
         extend: {
+          screens: { 
+            xs: '350px'
+          },
           colors: {
             secondary: "#00ff00",
             info: "#0000ff",

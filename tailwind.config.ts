@@ -6,5 +6,5 @@ export default <Partial<Config>>{
     extend: {
       colors: { secondary: "#00ff00", tertiary: "#0000ff" },
     },
-  }
+  },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="animate-in zoom-in duration-700 p-8 shadow-2xl">
+  <div class="animate-in zoom-in p-8 shadow-2xl duration-700">
     <h1 class="mb-8 text-3xl font-semibold">Profile</h1>
     <div class="space-y-4">
       <UTabs :items="items">
@@ -41,37 +41,37 @@
                 />
               </UFormGroup>
             </div>
-            <template #footer>
-              <div class="flex justify-between">
-                <UButton disabled type="submit">
-                  Save {{ item.key === "account" ? "Account" : "Password" }}
-                </UButton>
+  <template #footer>
+    <div class="flex flex-col gap-y-6 md:flex-row justify-between items-center text-center">
+      <UButton disabled type="submit">
+        Save {{ item.key === "account" ? "Account" : "Password" }}
+      </UButton>
 
-                <NuxtLink to="/post/creator">
-                  <UButton
-                    class="rounded-lg px-4 py-2 font-semibold focus:outline-none"
-                  >
-                    Create New Post
-                  </UButton>
-                </NuxtLink>
+        <NuxtLink to="/post/creator">
+          <UButton
+            class="rounded-lg font-semibold focus:outline-none"
+          >
+            Create New Post
+          </UButton>
+        </NuxtLink>
 
-                <NuxtLink to="/post/tags">
-                  <UButton
-                    class="rounded-lg px-4 py-2 font-semibold focus:outline-none"
-                  >
-                    Modify Tags
-                  </UButton>
-                </NuxtLink>
+        <NuxtLink to="/post/tags">
+          <UButton
+            class="rounded-lg font-semibold focus:outline-none"
+          >
+            Modify Tags
+          </UButton>
+        </NuxtLink>
 
-                <UButton
-                  color="red"
-                  class="rounded-lg px-4 py-2 font-semibold focus:outline-none"
-                  @click="logout"
-                >
-                  Logout
-                </UButton>
-              </div>
-            </template>
+      <UButton
+        color="red"
+        class="rounded-lg font-semibold focus:outline-none"
+        @click="logout"
+      >
+        Logout
+      </UButton>
+    </div>
+  </template>
           </UCard>
         </template>
       </UTabs>
