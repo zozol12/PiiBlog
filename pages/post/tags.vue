@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="animate-in zoom-in duration-700">
     <h1 class="mb-8 text-3xl font-semibold">Manage Tags</h1>
 
     <!-- Create Tag -->

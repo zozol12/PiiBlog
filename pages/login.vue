@@ -1,5 +1,5 @@
 <template>
-  <UCard>
+  <UCard class="animate-in zoom-in duration-700">
     <template #header> Login </template>
     <UForm ref="form" :state="state" class="space-y-3" @submit.prevent="signIn">
       <UFormGroup label="Email" name="email">

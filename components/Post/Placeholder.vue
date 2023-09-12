@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden rounded-lg bg-white shadow-2xl">
+  <div class="animate-pulse overflow-hidden rounded-lg bg-white shadow-2xl">
     <div class="relative h-40 md:h-64">
       <!-- Placeholder background -->
       <div class="absolute inset-0 h-full bg-gray-400 dark:bg-gray-500" />

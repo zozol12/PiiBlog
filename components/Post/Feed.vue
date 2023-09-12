@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4 md:w-3/4">
+  <div class="animate-in zoom-in duration-700 space-y-4 md:w-3/4">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <!-- Placeholder for posts -->
       <div v-if="shouldShowNoPostsFound" class="text-xl text-red-500">

@@ -1,12 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <router-link :to="`/post/${post.slug}`">
+  <nuxt-link :to="`/post/${post.slug}`">
     <div class="overflow-hidden rounded-lg bg-white shadow-2xl">
       <div class="relative h-40 md:h-64">
-        <div
-          :style="backgroundImageStyle"
-          class="absolute inset-0 h-full bg-cover bg-center"
-        />
+        <div :style="backgroundImageStyle" class="absolute inset-0 h-full bg-cover bg-center" />
         <div class="absolute inset-0 bg-black opacity-70" />
         <div class="absolute inset-0 flex items-center justify-center">
           <div class="px-6 text-center text-white">
@@ -16,11 +13,7 @@
             <p class="text-sm italic md:text-base">
               Post created by: {{ post.created_by }}
             </p>
-            <nuxt-link
-              v-for="(tag, index) in post.tags"
-              :key="index"
-              :to="`/?tags=${tag}`"
-            >
+            <nuxt-link v-for="(tag, index) in post.tags" :key="index" :to="`/?tags=${tag}`">
               <UBadge :label="tag" class="ml-1 mr-1" />
             </nuxt-link>
             <p class="text-sm md:text-base">
@@ -30,7 +23,7 @@
         </div>
       </div>
     </div>
-  </router-link>
+  </nuxt-link>
 </template>
 
 <script setup lang="ts">

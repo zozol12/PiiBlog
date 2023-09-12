@@ -9,7 +9,7 @@
 
         <!-- Side Panel -->
         <div
-          class="max-h-min space-y-4 rounded-xl bg-gray-800 shadow-2xl md:w-1/4"
+          class="animate-in zoom-in duration-700 max-h-min space-y-4 rounded-xl bg-gray-800 shadow-2xl md:w-1/4"
         >
           <div class="rounded-lg p-4 text-center shadow-md">
             <div class="mb-4 text-center">

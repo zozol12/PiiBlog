@@ -25,7 +25,7 @@ async function signUp() {
 </script>
 
 <template>
-  <UCard>
+  <UCard class="animate-in zoom-in duration-700">
     <template #header> Register </template>
     <UForm ref="form" :state="state" @submit.prevent="signUp">
       <UFormGroup label="Email" name="email">

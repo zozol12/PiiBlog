@@ -177,7 +177,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="rounded-xl p-8 shadow-2xl">
+  <div class="animate-in zoom-in duration-700 rounded-xl p-8 shadow-2xl">
     <h1 class="mb-8 text-3xl font-semibold">Post Editor</h1>
     <UCard class="rounded-xl shadow-2xl">
       <!-- UForm for Post Editing -->

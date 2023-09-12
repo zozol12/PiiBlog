@@ -1,5 +1,5 @@
 import tailwindTypography from "@tailwindcss/typography";
-
+import tailwindAnimate from "tailwindcss-animate";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: {
@@ -12,7 +12,10 @@ export default defineNuxtConfig({
   tailwindcss: {
     config: {
       content: [],
-      plugins: [tailwindTypography],
+      plugins: [
+        tailwindTypography, 
+        tailwindAnimate
+      ],
       theme: {
         extend: {
           colors: {

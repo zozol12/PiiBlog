@@ -1,9 +1,7 @@
 <template>
   <div class="flex min-h-screen flex-col">
-    <header class="m-4 space-x-4 rounded-xl bg-gray-800 p-4 text-white">
-      <div
-        class="container mx-auto flex flex-col items-center justify-between md:flex-row"
-      >
+    <header class="animate-in zoom-in duration-700 m-4 space-x-4 rounded-xl bg-gray-800 p-4 text-white">
+      <div class="container mx-auto flex flex-col items-center justify-between md:flex-row">
         <!-- Left side Header (Logo and Navigation) -->
         <div class="flex items-center">
           <h1 class="text-2xl font-semibold">
@@ -12,18 +10,12 @@
           <nav class="md:ml-4">
             <ul class="flex">
               <li>
-                <nuxt-link
-                  to="/about"
-                  class="ml-4 transition duration-300 hover:underline"
-                >
+                <nuxt-link to="/about" class="ml-4 transition duration-300 hover:underline">
                   about
                 </nuxt-link>
               </li>
               <li>
-                <nuxt-link
-                  to="/privacy"
-                  class="ml-4 transition duration-300 hover:underline"
-                >
+                <nuxt-link to="/privacy" class="ml-4 transition duration-300 hover:underline">
                   privacy
                 </nuxt-link>
               </li>
@@ -36,22 +28,12 @@
 
         <!-- Right side Header (Buttons and Theme Toggle) -->
         <div class="mt-4 flex items-center md:mt-0">
-          <UButton
-            v-if="user"
-            class="mr-4 px-4 py-2"
-            @click="router.push('/profile')"
-          >
+          <UButton v-if="user" class="mr-4 px-4 py-2" @click="router.push('/profile')">
             <Icon name="heroicons:user-solid" /> Profile
           </UButton>
 
-          <UButton
-            aria-label="Theme"
-            class="mr-4 px-4 py-2"
-            @click="isDark = !isDark"
-          >
-            <Icon
-              :name="isDark ? 'heroicons:moon-solid' : 'heroicons:sun-solid'"
-            />
+          <UButton aria-label="Theme" class="mr-4 px-4 py-2" @click="isDark = !isDark">
+            <Icon :name="isDark ? 'heroicons:moon-solid' : 'heroicons:sun-solid'" />
           </UButton>
           <div v-if="user">
             <UButton color="red" class="px-4 py-2" @click="logout">
@@ -68,40 +50,21 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 p-4">
+    <footer class="animate-in fade-in duration-700 bg-gray-800 p-4">
       <div class="container mx-auto flex items-center justify-between">
         <!-- Social UButtons -->
         <div class="flex space-x-4 text-white">
-          <a
-            href="https://x.com/"
-            target="_blank"
-            aria-label="Our X profile"
-            rel="noopener noreferrer"
-          >
+          <a href="https://x.com/" target="_blank" aria-label="Our X profile" rel="noopener noreferrer">
             <Icon name="simple-icons:x" />
           </a>
-          <a
-            href="https://linkedin.com/in/mikolaj-szmalc"
-            aria-label="Our linkedin profile"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://linkedin.com/in/mikolaj-szmalc" aria-label="Our linkedin profile" target="_blank"
+            rel="noopener noreferrer">
             <Icon name="simple-icons:linkedin" />
           </a>
-          <a
-            href="https://facebook.com/"
-            target="_blank"
-            aria-label="Our facebook profile"
-            rel="noopener noreferrer"
-          >
+          <a href="https://facebook.com/" target="_blank" aria-label="Our facebook profile" rel="noopener noreferrer">
             <Icon name="simple-icons:facebook" />
           </a>
-          <a
-            href="/rss.xml"
-            target="_blank"
-            aria-label="Our RSS feed"
-            rel="noopener noreferrer"
-          >
+          <a href="/rss.xml" target="_blank" aria-label="Our RSS feed" rel="noopener noreferrer">
             <Icon name="simple-icons:rss" />
           </a>
         </div>

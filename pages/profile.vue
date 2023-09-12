@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8 shadow-2xl">
+  <div class="animate-in zoom-in duration-700 p-8 shadow-2xl">
     <h1 class="mb-8 text-3xl font-semibold">Profile</h1>
     <div class="space-y-4">
       <UTabs :items="items">
