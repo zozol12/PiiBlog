@@ -25,9 +25,7 @@
 const q = ref("");
 // TODO Change reload
 const handleSubmit = async () => {
-  if (q.value.trim() !== "") {
-    await navigateTo({ path: "/", query: { search: q.value } });
-  }
+  await navigateTo({ path: "/", query: { search: q.value } });
 };
 
 const clearSearch = () => {

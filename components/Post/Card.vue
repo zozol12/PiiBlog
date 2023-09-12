@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <nuxt-link :to="`/post/${post.slug}`">
-    <div class="overflow-hidden rounded-lg bg-white shadow-2xl">
+    <div class="overflow-hidden rounded-lg border border-black dark:border-white bg-white shadow-2xl">
       <div class="relative h-40 md:h-64">
         <div
           :style="backgroundImageStyle"

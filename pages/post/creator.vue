@@ -145,6 +145,7 @@ async function submit() {
     errorMsg.value =
       error.message || "An error occurred while creating the post";
   }
+  await navigateTo('')
   isLoading.value = false;
 }
 

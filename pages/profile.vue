@@ -41,37 +41,35 @@
                 />
               </UFormGroup>
             </div>
-  <template #footer>
-    <div class="flex flex-col gap-y-6 md:flex-row justify-between items-center text-center">
-      <UButton disabled type="submit">
-        Save {{ item.key === "account" ? "Account" : "Password" }}
-      </UButton>
+            <template #footer>
+              <div
+                class="flex flex-col items-center justify-between gap-y-6 text-center md:flex-row"
+              >
+                <UButton disabled type="submit">
+                  Save {{ item.key === "account" ? "Account" : "Password" }}
+                </UButton>
 
-        <NuxtLink to="/post/creator">
-          <UButton
-            class="rounded-lg font-semibold focus:outline-none"
-          >
-            Create New Post
-          </UButton>
-        </NuxtLink>
+                <NuxtLink to="/post/creator">
+                  <UButton class="rounded-lg font-semibold focus:outline-none">
+                    Create New Post
+                  </UButton>
+                </NuxtLink>
 
-        <NuxtLink to="/post/tags">
-          <UButton
-            class="rounded-lg font-semibold focus:outline-none"
-          >
-            Modify Tags
-          </UButton>
-        </NuxtLink>
+                <NuxtLink to="/post/tags">
+                  <UButton class="rounded-lg font-semibold focus:outline-none">
+                    Modify Tags
+                  </UButton>
+                </NuxtLink>
 
-      <UButton
-        color="red"
-        class="rounded-lg font-semibold focus:outline-none"
-        @click="logout"
-      >
-        Logout
-      </UButton>
-    </div>
-  </template>
+                <UButton
+                  color="red"
+                  class="rounded-lg font-semibold focus:outline-none"
+                  @click="logout"
+                >
+                  Logout
+                </UButton>
+              </div>
+            </template>
           </UCard>
         </template>
       </UTabs>

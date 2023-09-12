@@ -1,5 +1,5 @@
 <template>
-  <div class="animate-in zoom-in space-y-4 duration-700 md:w-3/4">
+  <div class="animate-in zoom-in space-y-4 duration-700 md:w-11/12">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <!-- Placeholder for posts -->
       <div v-if="shouldShowNoPostsFound" class="text-xl text-red-500">
@@ -134,6 +134,9 @@ const filteredPosts = computed(() => {
 watch(
   () => route.query,
   (newQuery) => {
+    query.tags = "";
+    query.search = "";
+    query.author = "";
     if (newQuery.tags) {
       query.tags = newQuery.tags;
     }

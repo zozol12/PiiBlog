@@ -6,7 +6,7 @@
       <header class="mb-6 text-center">
         <h1 class="text-3xl font-semibold">About Me</h1>
       </header>
-      <main>
+      <div class="shadow-lg">
         <p>Hello, I'm Mikołaj Szmalc, and welcome to my demonstration blog!</p>
         <br />
         <p>
@@ -66,7 +66,7 @@
           </li>
         </ul>
         <NuxtImg src="/performance.png" class="mt-4" />
-      </main>
+      </div>
       <footer class="mt-6 text-right text-sm">
         <p>&copy; 2023 Mikołaj Szmalc</p>
       </footer>

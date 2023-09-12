@@ -1,62 +1,53 @@
 <template>
   <div class="py-8">
     <div class="container mx-auto">
-      <div
-        class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-3">
         <!-- Blog Feed -->
-        <PostFeed />
+        <PostFeed class="col-span-2 mb-4" />
 
         <!-- Side Panel -->
-  <div
-    class="animate-in bottom-0 right-0 flex flex-col space-y-4 rounded-xl bg-gray-800 shadow-2xl duration-700 md:w-1/4 h-[440px]"
-  >
-    <div class="rounded-lg p-4 flex-grow text-center shadow-md">
-      <div class="mb-4 text-center">
-        <div class="text-sec text-2xl font-semibold text-white">
-          Author
+        <div class="md:col-span-1">
+          <div class="animate-in bottom-0 right-0 flex flex-col h-[300px] rounded-xl bg-gray-800 shadow-2xl duration-700">
+            <div class="flex-grow rounded-lg p-4 text-center text-white shadow-md">
+              <div class="mb-4 text-center">
+                <div class="text-sec text-2xl font-semibold text-white">
+                  Author
+                </div>
+              </div>
+              PiiNut Industries
+              <!-- profile content here -->
+            </div>
+
+            <div class="flex-shrink-0 rounded-lg p-8 text-center">
+              <UButton v-if="user" color="red" class="px-4 py-2" @click="logout">
+                <Icon name="heroicons:lock-closed-solid" /> Logout
+              </UButton>
+              <UButton v-else-if="config.showLoginButton" class="px-4 py-2" @click="login">
+                <Icon name="heroicons:lock-closed-solid" /> Login
+              </UButton>
+            </div>
+          </div>
+                  <!-- Clickable tag badges -->
+          <div class=" bg-gray-800 mt-4 rounded-lg p-4 text-center shadow-md">
+            <div class="mb-4 text-center">
+              <div class="text-sec text-2xl font-semibold text-white">
+                Tags / Categories
+              </div>
+            </div>
+            <router-link v-for="(tag, index) in tags" :key="index" :to="`/?tags=${tag.name}`">
+              <UBadge :label="tag.name" class="ml-1 mr-1" />
+            </router-link>
+          </div>
         </div>
-      </div>
-      PiiNut Industries
-      <!-- profile content here -->
-    </div>
-    <div v-if="user" class="rounded-lg p-4 flex-grow shadow-md">
-      <div class="mb-4 text-center">
-        <div class="text-2xl font-semibold text-white">Settings</div>
-      </div>
-      <!-- settings content here -->
-    </div>
-    <!-- Clickable tag badges -->
-    <div class="rounded-lg p-4 justify-start text-center shadow-md">
-      <div class="mb-4 text-center">
-        <div class="text-sec text-2xl font-semibold text-white">
-          Tags / Categories
-        </div>
-      </div>
-      <router-link
-        v-for="(tag, index) in tags"
-        :key="index"
-        :to="`/?tags=${tag.name}`"
-      >
-        <UBadge :label="tag.name" class="ml-1 mr-1" />
-      </router-link>
-    </div>
-    <div class="flex-shrink-0 rounded-lg p-8 text-center">
-      <UButton v-if="user" color="red" class="px-4 py-2" @click="logout">
-        <Icon name="heroicons:lock-closed-solid" /> Logout
-      </UButton>
-      <UButton v-else-if="config.showLoginButton" class="px-4 py-2" @click="login">
-        <Icon name="heroicons:lock-closed-solid" /> Login
-      </UButton>
-    </div>
-  </div>
+
+
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const config = useConfig()
+const config = useConfig();
 const user = useSupabaseUser();
 
 const tags: Ref<any[]> = ref([]);

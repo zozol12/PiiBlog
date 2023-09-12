@@ -14,10 +14,9 @@ export default defineNuxtConfig({
       content: [],
       plugins: [tailwindTypography, tailwindAnimate],
       theme: {
-
         extend: {
-          screens: { 
-            xs: '350px'
+          screens: {
+            xs: "350px",
           },
           colors: {
             secondary: "#00ff00",
