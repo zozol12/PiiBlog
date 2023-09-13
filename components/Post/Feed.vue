@@ -15,9 +15,6 @@
         v-for="(post, index) in filteredPosts"
         :key="index"
         :post="post"
-        :background-image-style="
-          storage.getBackgroundImageStyle(post.thumbnail)
-        "
       />
     </div>
     <!-- Load More Button -->
@@ -106,8 +103,6 @@ async function loadMorePosts() {
 }
 // Initial load
 loadMorePosts();
-
-const storage = useStorageUtils();
 
 const shouldShowPlaceholders = computed(() => {
   return loadedPosts.value === 0 && isLoading.value;

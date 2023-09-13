@@ -21,6 +21,8 @@
                 class="mt-6 inline-block rounded-xl"
                 src="piinut-high-resolution-color-logo.webp"
                 height="256"
+                weight="341"
+                lazy
               />
             </div>
 

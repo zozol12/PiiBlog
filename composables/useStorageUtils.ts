@@ -6,10 +6,5 @@ export const useStorageUtils = () => {
       storage.getPublicUrl(thumbnailName).data.publicUrl;
     return backgroundImageUrl;
   };
-
-  const getBackgroundImageStyle = (thumbnailName: string = "default") => {
-    const backgroundImageUrl = getThumbnailUrl(thumbnailName);
-    return { backgroundImage: `url('${backgroundImageUrl}')` };
-  };
-  return { getThumbnailUrl, getBackgroundImageStyle };
+  return { getThumbnailUrl };
 };

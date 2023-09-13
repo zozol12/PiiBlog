@@ -1,13 +1,17 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <nuxt-link :to="`/post/${post.slug}`">
     <div
+      ref="parentDiv"
       class="overflow-hidden rounded-lg border border-black bg-white shadow-2xl transition duration-300 hover:scale-105 dark:border-white"
     >
-      <div class="relative h-40 md:h-64">
-        <div
-          :style="backgroundImageStyle"
-          class="absolute inset-0 h-full bg-cover bg-center"
+      <div class="relative h-40 md:h-64" :style="imageContainerStyle">
+        <NuxtImg
+          :src="storage.getThumbnailUrl(post.thumbnail)"
+          :alt="post.name"
+          :width="width"
+          :height="height"
+          class="absolute inset-0 h-full w-full object-cover"
+          lazy
         />
         <div class="absolute inset-0 bg-black opacity-30" />
         <div
@@ -34,20 +38,43 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
+const storage = useStorageUtils();
+const { post } = defineProps({
   post: {
     type: Object as PropType<{
       slug: string;
       tags: string[];
       name: string;
+      thumbnail: string;
       created_at: string;
       created_by: string;
     }>,
     required: true,
   },
-  backgroundImageStyle: {
-    type: Object,
-    required: true,
-  },
+});
+
+const parentDiv = ref(); // Create a ref for the parent div
+
+// Computed properties to calculate width and height based on the parent div's dimensions
+const width = computed(() => {
+  if (parentDiv.value) {
+    return parentDiv.value.offsetWidth; // Get the parent div's width
+  }
+  return null;
+});
+
+const height = computed(() => {
+  if (parentDiv.value) {
+    return parentDiv.value.offsetHeight; // Get the parent div's height
+  }
+  return null;
+});
+
+const imageContainerStyle = computed(() => {
+  // Use the computed width and height to set the style for the image container
+  return {
+    width: `${width.value}px`,
+    height: `${height.value}px`,
+  };
 });
 </script>
