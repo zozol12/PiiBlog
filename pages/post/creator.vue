@@ -116,7 +116,6 @@ async function redirectToPost() {
 async function submit() {
   await form.value.validate();
   isLoading.value = true;
-  const tagsList = tags.map((tag) => tag.name);
   try {
     const postData = {
       name: state.value.name,
@@ -236,7 +235,7 @@ onMounted(async () => {
           <!-- Markdown Preview Section (Right) -->
           <div class="w-1/2 p-2">
             Content Preview
-            <div class="bg-gray" v-html="renderedMarkdown" />
+            <div class="bg-gray prose lg:prose-xl" v-html="renderedMarkdown" />
           </div>
         </div>
         <USelectMenu
