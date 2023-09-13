@@ -20,8 +20,11 @@
               <NuxtImg
                 class="mt-6 inline-block rounded-xl"
                 src="piinut-high-resolution-color-logo.webp"
+                format="webp"
+                loading="lazy"
                 height="256"
-                weight="341"
+                width="341"
+                alt="Author Logo"
                 lazy
               />
             </div>

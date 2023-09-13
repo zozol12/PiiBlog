@@ -1,15 +1,14 @@
 <template>
   <nuxt-link :to="`/post/${post.slug}`">
     <div
-      ref="parentDiv"
       class="overflow-hidden rounded-lg border border-black bg-white shadow-2xl transition duration-300 hover:scale-105 dark:border-white"
     >
-      <div class="relative h-40 md:h-64" :style="imageContainerStyle">
+      <div class="relative h-40 md:h-64">
         <NuxtImg
           :src="storage.getThumbnailUrl(post.thumbnail)"
           :alt="post.name"
-          :width="width"
-          :height="height"
+          format="webp"
+          loading="lazy"
           class="absolute inset-0 h-full w-full object-cover"
           lazy
         />
@@ -51,30 +50,5 @@ const { post } = defineProps({
     }>,
     required: true,
   },
-});
-
-const parentDiv = ref(); // Create a ref for the parent div
-
-// Computed properties to calculate width and height based on the parent div's dimensions
-const width = computed(() => {
-  if (parentDiv.value) {
-    return parentDiv.value.offsetWidth; // Get the parent div's width
-  }
-  return null;
-});
-
-const height = computed(() => {
-  if (parentDiv.value) {
-    return parentDiv.value.offsetHeight; // Get the parent div's height
-  }
-  return null;
-});
-
-const imageContainerStyle = computed(() => {
-  // Use the computed width and height to set the style for the image container
-  return {
-    width: `${width.value}px`,
-    height: `${height.value}px`,
-  };
 });
 </script>
