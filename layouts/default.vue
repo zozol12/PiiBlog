@@ -82,7 +82,7 @@
             @click="isDark = !isDark"
           >
             <Icon
-              class="transition duration-500"
+              class="text-xl transition duration-500"
               :name="isDark ? 'heroicons:moon-solid' : 'heroicons:sun-solid'"
             />
           </UButton>
@@ -185,7 +185,7 @@
         </p>
       </div>
     </footer>
-      <UNotifications />
+    <UNotifications />
   </div>
 </template>
 

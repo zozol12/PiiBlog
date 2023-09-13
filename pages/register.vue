@@ -2,23 +2,26 @@
 const state: Ref<any> = ref({
   email: undefined,
   password: undefined,
-})
-const toast = useToast()
-const isLoading = ref(false)
+});
+const toast = useToast();
+const isLoading = ref(false);
 
-const form = ref()
+const form = ref();
 // Sign Up logic
 async function signUp() {
   isLoading.value = true;
   try {
-    await useSupabase().signUp(state.value.email, state.value.password)
-    toast.add({ title: "Check your email to confirm!"})
+    await useSupabase().signUp(state.value.email, state.value.password);
+    toast.add({ title: "Check your email to confirm!" });
   } catch (_e: any) {
-    const error: Error = _e
-    toast.add({ title: error.message || "An error occurred while creating the post", color: 'red' })
+    const error: Error = _e;
+    toast.add({
+      title: error.message || "An error occurred while creating the post",
+      color: "red",
+    });
   }
 
-  isLoading.value = false
+  isLoading.value = false;
 }
 </script>
 

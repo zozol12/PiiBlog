@@ -54,6 +54,7 @@
     "markdown-it-link-attributes": "^4.0.1",
     "mdurl": "^1.0.1",
     "nuxt-server-utils": "^0.0.7",
+    "obscenity": "^0.1.4",
     "valibot": "^0.13.1"
   }
 }

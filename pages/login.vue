@@ -27,7 +27,7 @@ const state = ref({
 });
 const isLoading = ref(false);
 const form = ref();
-const toast = useToast()
+const toast = useToast();
 
 async function signIn() {
   isLoading.value = true;
@@ -35,7 +35,10 @@ async function signIn() {
     await useSupabase().signIn(state.value.email, state.value.password);
   } catch (_e: any) {
     const error: Error = _e;
-    toast.add({ title: error.message || "An error occurred while logging in", color: 'red' })
+    toast.add({
+      title: error.message || "An error occurred while logging in",
+      color: "red",
+    });
   }
   isLoading.value = false;
 }

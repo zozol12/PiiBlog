@@ -17,7 +17,7 @@
             <h2 class="mb-2 text-2xl font-semibold md:text-3xl">
               {{ post.name }}
             </h2>
-            <div class="flex justify-center">
+            <div>
               <nuxt-link
                 v-for="(tag, index) in post.tags"
                 :key="index"
@@ -34,8 +34,6 @@
 </template>
 
 <script setup lang="ts">
-const dateUtils = useDateUtils();
-
 defineProps({
   post: {
     type: Object as PropType<{

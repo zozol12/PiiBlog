@@ -22,6 +22,12 @@
           <p>Post not found</p>
         </div>
       </main>
+    </UCard>
+    <UCard v-if="post" class="my-4 shadow-md">
+      <div class="flex flex-row justify-between">
+        <p>Created by: {{ post.created_by }}</p>
+        <p>{{ dateUtils.formatDate(post.created_at) }}</p>
+      </div>
       <!-- Edit button for authenticated users -->
       <div v-if="user" c class="mt-4 flex justify-between">
         <NuxtLink
@@ -36,10 +42,8 @@
         </NuxtLink>
       </div>
     </UCard>
-    <div v-if="post">
-          <p>Author: {{ post.created_by }}</p>
-          <p>Created on: {{ dateUtils.formatDate(post.created_at) }}</p>
-    </div>
+    <!-- Comment section -->
+    <PostComments v-if="post" :post-id="post.id" />
   </div>
 </template>
 
@@ -68,7 +72,7 @@ async function fetchPost() {
     // console.error('Error fetching post:', error.message)
   } else {
     post.value = data;
-    // console.log(post.value.name)
+    // console.log(post.value)
   }
 
   postFetched.value = true;

@@ -5,7 +5,7 @@ import type { FormError } from "@nuxthq/ui/dist/runtime/types";
 const route = useRoute();
 const supabase = useSupabase();
 
-const toast = useToast()
+const toast = useToast();
 
 const mode: string = (route.query.mode as string) || "create";
 const postSlug: string = (route.query.slug as string) || "";
@@ -46,7 +46,10 @@ async function fetchPostData() {
   } catch (_e: any) {
     const error: Error = _e;
     // console.error(error)
-    toast.add({ title: error.message || "An error occurred while creating the post", color: 'red' })
+    toast.add({
+      title: error.message || "An error occurred while creating the post",
+      color: "red",
+    });
   }
 }
 const validate = (state: any): FormError[] => {
@@ -87,10 +90,14 @@ async function handleThumbnailChange(event: Event) {
       .upload(state.value.thumbnail, state.value.thumbnailFile);
 
     if (thumbnailError) {
-      toast.add({ title: "Resource with the same name exists already! Using the one that was already uploaded...", color:'red'})
+      toast.add({
+        title:
+          "Resource with the same name exists already! Using the one that was already uploaded...",
+        color: "red",
+      });
     }
 
-    toast.add({ title: "Resource uploaded successfully!"})
+    toast.add({ title: "Resource uploaded successfully!" });
   }
 }
 
@@ -102,8 +109,8 @@ async function removePost() {
 type Tags = Database["public"]["Tables"]["Tags"][];
 const tags: Tags = await supabase.getTags();
 
-async function redirectToPost(){
-  await navigateTo({ path: `/post/${state.value.slug}`})
+async function redirectToPost() {
+  await navigateTo({ path: `/post/${state.value.slug}` });
 }
 
 async function submit() {
@@ -115,7 +122,7 @@ async function submit() {
       name: state.value.name,
       slug: state.value.slug,
       content: state.value.content,
-      tags: tagsList,
+      tags: state.value.tags,
       thumbnail: state.value.thumbnail,
       meta_title: state.value.meta_title,
       meta_description: state.value.meta_description,
@@ -130,7 +137,11 @@ async function submit() {
       if (error) {
         throw error;
       } else {
-        toast.add({ title: "Post updated successfully. Redirecting...", click: redirectToPost, callback: redirectToPost })
+        toast.add({
+          title: "Post updated successfully. Redirecting...",
+          click: redirectToPost,
+          callback: redirectToPost,
+        });
       }
     } else {
       const { data, error } = await client
@@ -140,13 +151,20 @@ async function submit() {
       if (error) {
         throw error;
       } else {
-        toast.add({ title: "Post created successfully. Redirecting...", click: redirectToPost, callback: redirectToPost })
+        toast.add({
+          title: "Post created successfully. Redirecting...",
+          click: redirectToPost,
+          callback: redirectToPost,
+        });
       }
     }
   } catch (_e: any) {
     const error: Error = _e;
     // console.error(error)
-    toast.add({ title: error.message || "An error occurred while creating the post", color: 'red' })
+    toast.add({
+      title: error.message || "An error occurred while creating the post",
+      color: "red",
+    });
   }
   isLoading.value = false;
 }
@@ -184,20 +202,34 @@ onMounted(async () => {
     <h1 class="mb-8 text-3xl font-semibold">Post Editor</h1>
     <UCard class="rounded-xl shadow-2xl">
       <!-- UForm for Post Editing -->
-      <UForm ref="form" class="space-y-3" :validate="validate" :state="state" @submit.prevent="submit">
+      <UForm
+        ref="form"
+        class="space-y-3"
+        :validate="validate"
+        :state="state"
+        @submit.prevent="submit"
+      >
         <UFormGroup label="Name" name="name">
-          <UInput v-model="state.name" placeholder="Name of your post. Make sure it's catchy!" />
+          <UInput
+            v-model="state.name"
+            placeholder="Name of your post. Make sure it's catchy!"
+          />
         </UFormGroup>
         <UFormGroup label="Slug" name="slug">
-          <UInput v-model="state.slug" placeholder="your-post-name-like-this-explanatory-not-catchy" />
+          <UInput
+            v-model="state.slug"
+            placeholder="your-post-name-like-this-explanatory-not-catchy"
+          />
         </UFormGroup>
         <div class="flex">
           <!-- Text Input Section (Left) -->
           <div class="w-1/2 p-2">
             <UFormGroup label="Content" name="content">
               <UTextarea
-v-model="state.content" resize
-                placeholder="You can use markdown here... And HTML... And TailwindCSS..." />
+                v-model="state.content"
+                resize
+                placeholder="You can use markdown here... And HTML... And TailwindCSS..."
+              />
             </UFormGroup>
           </div>
 
@@ -208,24 +240,44 @@ v-model="state.content" resize
           </div>
         </div>
         <USelectMenu
-v-model="state.tags" multiple searchable placeholder="Select tags" option-attribute="name"
-          :options="tags" />
+          v-model="state.tags"
+          multiple
+          searchable
+          placeholder="Select tags"
+          option-attribute="name"
+          :options="tags"
+        />
         <div>
-          <label class="block text-sm font-medium">Thumbnail
+          <label class="block text-sm font-medium"
+            >Thumbnail
 
-            <NuxtImg :src="storage.getThumbnailUrl(state.thumbnail)" class="m-1 max-h-12" />
+            <NuxtImg
+              :src="storage.getThumbnailUrl(state.thumbnail)"
+              class="m-1 max-h-12"
+            />
             {{ state.thumbnail }}
           </label>
 
           <input type="file" accept="image/*" @change="handleThumbnailChange" />
         </div>
         <UFormGroup label="Meta title" name="meta_title">
-          <UInput v-model="state.meta_title" placeholder="Meta title for browsers!" />
+          <UInput
+            v-model="state.meta_title"
+            placeholder="Meta title for browsers!"
+          />
         </UFormGroup>
         <UFormGroup label="Meta description" name="meta_description">
-          <UInput v-model="state.meta_description" placeholder="And meta description for browsers" />
+          <UInput
+            v-model="state.meta_description"
+            placeholder="And meta description for browsers"
+          />
         </UFormGroup>
-        <UButton block type="submit" :loading="isLoading" class="rounded-lg px-4 py-2 font-semibold focus:outline-none">
+        <UButton
+          block
+          type="submit"
+          :loading="isLoading"
+          class="rounded-lg px-4 py-2 font-semibold focus:outline-none"
+        >
           {{ mode === "edit" ? "Update Post" : "Create Post" }}
         </UButton>
       </UForm>
