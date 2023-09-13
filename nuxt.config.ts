@@ -27,14 +27,14 @@ export default defineNuxtConfig({
     },
   },
   modules: [
+    '@nuxtjs/partytown',
     "@nuxt/ui",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/supabase",
     "@nuxtjs/robots",
     //    '@nuxtjs/html-validator',
     "nuxt-icon",
-    "@nuxt/image",
-    "@nuxtjs/eslint-module",
+    "@nuxt/image"
   ],
   ui: {
     global: true,
