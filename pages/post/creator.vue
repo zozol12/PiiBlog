@@ -235,7 +235,7 @@ onMounted(async () => {
           <!-- Markdown Preview Section (Right) -->
           <div class="w-1/2 p-2">
             Content Preview
-            <div class="bg-gray prose lg:prose-xl" v-html="renderedMarkdown" />
+            <div class="prose dark:prose-invert lg:prose-xl" v-html="renderedMarkdown" />
           </div>
         </div>
         <USelectMenu
