@@ -7,40 +7,63 @@
 
         <!-- Side Panel -->
         <div class="md:col-span-1">
-          <div class="animate-in bottom-0 right-0 flex flex-col h-[300px] rounded-xl bg-gray-800 shadow-2xl duration-700">
-            <div class="flex-grow rounded-lg p-4 text-center text-white shadow-md">
+          <div
+            class="animate-in bottom-0 right-0 flex h-[480px] flex-col rounded-xl bg-gray-800 shadow-2xl duration-700"
+          >
+            <div class="flex-grow rounded-lg p-4 text-center text-white">
               <div class="mb-4 text-center">
                 <div class="text-sec text-2xl font-semibold text-white">
                   Author
                 </div>
               </div>
               PiiNut Industries
-              <!-- profile content here -->
+              <NuxtImg
+                class="mt-6 inline-block rounded-xl"
+                src="piinut-high-resolution-color-logo.webp"
+                height="256"
+              />
             </div>
 
             <div class="flex-shrink-0 rounded-lg p-8 text-center">
-              <UButton v-if="user" color="red" class="px-4 py-2" @click="logout">
+              <UButton
+                v-if="user"
+                color="red"
+                variant="outline"
+                class="px-4 py-2"
+                @click="logout"
+              >
                 <Icon name="heroicons:lock-closed-solid" /> Logout
               </UButton>
-              <UButton v-else-if="config.showLoginButton" class="px-4 py-2" @click="login">
-                <Icon name="heroicons:lock-closed-solid" /> Login
+              <UButton
+                v-else-if="config.showLoginButton"
+                variant="outline"
+                class="px-4 py-2"
+                @click="login"
+              >
+                <Icon name="heroicons:lock-open-solid" /> Login
               </UButton>
             </div>
           </div>
-                  <!-- Clickable tag badges -->
-          <div class=" bg-gray-800 mt-4 rounded-lg p-4 text-center shadow-md">
+          <!-- Clickable tag badges -->
+          <div class="mt-4 rounded-lg p-4 text-center">
             <div class="mb-4 text-center">
-              <div class="text-sec text-2xl font-semibold text-white">
+              <div
+                class="text-sec text-2xl font-semibold transition duration-100"
+              >
                 Tags / Categories
               </div>
             </div>
-            <router-link v-for="(tag, index) in tags" :key="index" :to="`/?tags=${tag.name}`">
-              <UBadge :label="tag.name" class="ml-1 mr-1" />
-            </router-link>
+            <UButton
+              v-for="(tag, index) in tags"
+              :key="index"
+              class="m-1 transition duration-500"
+              :variant="isDark ? 'outline' : 'solid'"
+              :to="`/?tags=${tag.name}`"
+            >
+              {{ tag.name }}
+            </UButton>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
@@ -55,6 +78,16 @@ const tags: Ref<any[]> = ref([]);
 async function loadTags() {
   tags.value = await useSupabase().getTags();
 }
+const colorMode = useColorMode();
+
+const isDark = computed({
+  get() {
+    return colorMode.value === "dark";
+  },
+  set() {
+    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
+  },
+});
 
 async function logout() {
   try {

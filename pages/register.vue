@@ -2,25 +2,23 @@
 const state: Ref<any> = ref({
   email: undefined,
   password: undefined,
-});
+})
+const toast = useToast()
+const isLoading = ref(false)
 
-const errorMsg: Ref<string | undefined> = ref(undefined);
-const successMsg: Ref<string | undefined> = ref(undefined);
-const isLoading = ref(false);
-
-const form = ref();
+const form = ref()
 // Sign Up logic
 async function signUp() {
   isLoading.value = true;
   try {
-    await useSupabase().signUp(state.value.email, state.value.password);
-    successMsg.value = "Check your email to confirm";
+    await useSupabase().signUp(state.value.email, state.value.password)
+    toast.add({ title: "Check your email to confirm!"})
   } catch (_e: any) {
-    const error: Error = _e;
-    errorMsg.value = error.message;
+    const error: Error = _e
+    toast.add({ title: error.message || "An error occurred while creating the post", color: 'red' })
   }
 
-  isLoading.value = false;
+  isLoading.value = false
 }
 </script>
 
@@ -42,21 +40,6 @@ async function signUp() {
         {{ isLoading ? "Logging in..." : "Submit" }}
       </UButton>
       <ULink to="/login"> Already have an account? </ULink>
-      <UAlert v-if="errorMsg" title="Error" color="red" variant="solid">
-        <template #description>
-          {{ errorMsg }}
-        </template>
-      </UAlert>
-      <UAlert
-        v-else-if="successMsg"
-        title="Success"
-        color="green"
-        variant="solid"
-      >
-        <template #description>
-          {{ successMsg }}
-        </template>
-      </UAlert>
     </UForm>
   </UCard>
 </template>

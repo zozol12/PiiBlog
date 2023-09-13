@@ -24,7 +24,7 @@
     <div v-if="hasMorePosts" class="text-center">
       <UButton
         :loading="isLoading"
-        class="rounded-lg px-4 py-2 font-semibold focus:outline-none"
+        class="rounded-lg px-4 py-2 font-semibold transition duration-75 focus:outline-none"
         @click="loadMorePosts"
       >
         {{ isLoading ? "Loading..." : "Load More" }}

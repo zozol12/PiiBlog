@@ -96,7 +96,7 @@ const items = [
       "Change your password here. After saving, you'll be logged out.",
   },
 ];
-const accountForm = reactive({ email: state.email });
+const accountForm = reactive({ email: state.value.email });
 const passwordForm = reactive({ currentPassword: "", newPassword: "" });
 
 async function logout() {

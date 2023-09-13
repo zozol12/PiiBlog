@@ -57,6 +57,7 @@ const tags: Ref<any[]> = ref([]);
 
 const client = useSupabaseClient<Database>();
 const user = useSupabaseUser();
+const toast = useToast()
 const form = ref();
 
 // redirect to login page if user is not authenticated
@@ -92,9 +93,11 @@ async function createTag() {
       .select();
     if (error) {
       // console.error('Error creating tag:', error.message)
+      toast.add({ title: error.message || "An error occurred while creating the tag", color: 'red' })
     } else {
       newTagName.value = "";
       loadTags();
+      toast.add({ title: "Tag created successfully"})
     }
   }
 }
@@ -118,9 +121,12 @@ async function updateTag() {
 
     if (error) {
       // console.error('Error updating tag:', error.message)
+      toast.add({ title: error.message || "An error occurred while updating tag", color: 'red' })
     } else {
       editingTag.value = null; // Close the edit modal
+      modalOpen.value = false
       loadTags(); // Reload the tags list
+      toast.add({ title: "Tag upadated successfully"})
     }
   }
 }
@@ -130,8 +136,10 @@ async function deleteTag(tag: any) {
   const { error } = await client.from("Tags").delete().eq("id", tag.id);
   if (error) {
     // console.error('Error deleting tag:', error.message)
+    toast.add({ title: error.message || "An error occurred while deleting tag...", color: 'red' })
   } else {
     loadTags();
+    toast.add({ title: "Tag deleted successfully"})
   }
 }
 </script>

@@ -22,24 +22,24 @@
           <p>Post not found</p>
         </div>
       </main>
-      <footer v-if="post" class="mt-6 text-sm">
-        <p>Author: {{ post.created_by }}</p>
-        <p>Created on: {{ dateUtils.formatDate(post.created_at) }}</p>
-      </footer>
       <!-- Edit button for authenticated users -->
-      <div v-if="user" class="mt-4 flex justify-between">
+      <div v-if="user" c class="mt-4 flex justify-between">
         <NuxtLink
           :to="{ path: 'creator', query: { mode: 'edit', slug: slug } }"
         >
-          <UButton class="btn"> Edit Post </UButton>
+          <UButton variant="outline"> Edit Post </UButton>
         </NuxtLink>
         <NuxtLink
           :to="{ path: 'creator', query: { mode: 'remove', slug: slug } }"
         >
-          <UButton class="btn" color="red"> Remove Post </UButton>
+          <UButton color="red" variant="outline"> Remove Post </UButton>
         </NuxtLink>
       </div>
     </UCard>
+    <div v-if="post">
+          <p>Author: {{ post.created_by }}</p>
+          <p>Created on: {{ dateUtils.formatDate(post.created_at) }}</p>
+    </div>
   </div>
 </template>
 

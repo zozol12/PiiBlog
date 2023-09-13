@@ -16,30 +16,6 @@
         {{ isLoading ? "Logging in..." : "Submit" }}
       </UButton>
       <ULink class="ml-4" to="/register"> Don't have an account? </ULink>
-      <UAlert
-        v-if="errorMsg"
-        title="Error"
-        color="red"
-        variant="solid"
-        class="mt-4"
-      >
-        <template #title> Error </template>
-        <template #description>
-          {{ errorMsg }}
-        </template>
-      </UAlert>
-      <UAlert
-        v-else-if="successMsg"
-        title="Success"
-        color="green"
-        variant="solid"
-        class="mt-4"
-      >
-        <template #title> Success </template>
-        <template #description>
-          {{ successMsg }}
-        </template>
-      </UAlert>
     </UForm>
   </UCard>
 </template>
@@ -49,10 +25,9 @@ const state = ref({
   email: "",
   password: "",
 });
-const errorMsg: Ref<string | undefined> = ref(undefined);
-const successMsg: Ref<string | undefined> = ref(undefined);
 const isLoading = ref(false);
 const form = ref();
+const toast = useToast()
 
 async function signIn() {
   isLoading.value = true;
@@ -60,7 +35,7 @@ async function signIn() {
     await useSupabase().signIn(state.value.email, state.value.password);
   } catch (_e: any) {
     const error: Error = _e;
-    errorMsg.value = error.message || "An error occurred while logging in";
+    toast.add({ title: error.message || "An error occurred while logging in", color: 'red' })
   }
   isLoading.value = false;
 }

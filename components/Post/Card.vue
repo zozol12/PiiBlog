@@ -1,31 +1,31 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <nuxt-link :to="`/post/${post.slug}`">
-    <div class="overflow-hidden rounded-lg border border-black dark:border-white bg-white shadow-2xl">
+    <div
+      class="overflow-hidden rounded-lg border border-black bg-white shadow-2xl transition duration-300 hover:scale-105 dark:border-white"
+    >
       <div class="relative h-40 md:h-64">
         <div
           :style="backgroundImageStyle"
           class="absolute inset-0 h-full bg-cover bg-center"
         />
-        <div class="absolute inset-0 bg-black opacity-70" />
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class="px-6 text-center text-white">
+        <div class="absolute inset-0 bg-black opacity-30" />
+        <div
+          class="absolute bottom-0 left-0 w-full bg-black bg-opacity-60 text-center"
+        >
+          <div class="px-6 py-4 text-white">
             <h2 class="mb-2 text-2xl font-semibold md:text-3xl">
               {{ post.name }}
             </h2>
-            <p class="text-sm italic md:text-base">
-              Post created by: {{ post.created_by }}
-            </p>
-            <nuxt-link
-              v-for="(tag, index) in post.tags"
-              :key="index"
-              :to="`/?tags=${tag}`"
-            >
-              <UBadge :label="tag" class="ml-1 mr-1" />
-            </nuxt-link>
-            <p class="text-sm md:text-base">
-              {{ dateUtils.formatDate(post.created_at) }}
-            </p>
+            <div class="flex justify-center">
+              <nuxt-link
+                v-for="(tag, index) in post.tags"
+                :key="index"
+                :to="`/?tags=${tag}`"
+              >
+                <UBadge :label="tag" class="ml-1 mr-1" />
+              </nuxt-link>
+            </div>
           </div>
         </div>
       </div>

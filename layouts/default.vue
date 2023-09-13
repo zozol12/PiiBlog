@@ -1,12 +1,12 @@
 <template>
   <div class="flex min-h-screen flex-col">
     <header
-      class="animate-in zoom-in mx-4 mt-4 space-x-4 rounded-xl bg-gray-800 p-4 pb-0 md:p-4 text-white duration-700"
+      class="animate-in zoom-in mx-4 mt-4 space-x-4 rounded-xl bg-gray-800 p-4 pb-0 text-white transition duration-700 md:p-4"
     >
       <div
         class="container mx-auto flex flex-col items-center justify-between md:flex-row"
       >
-        <!-- Mobile Menu Button -->
+        <!-- Mobile Menu -->
         <div class="flex w-full items-center justify-between md:hidden">
           <UButton class="text-xl" aria-label="Theme" @click="isDark = !isDark">
             <Icon
@@ -24,26 +24,35 @@
           </UButton>
         </div>
 
-        <!-- Left side Header (Logo and Navigation) -->
+        <!-- Desktop Left side Header (Logo and Navigation) -->
         <div class="hidden items-center md:flex">
-          <h1 class="text-2xl font-semibold">
-            <nuxt-link to="/"> {{ config.blogName }} </nuxt-link>
+          <h1 class="text-2xl font-semibold duration-1000 hover:scale-105">
+            <nuxt-link
+              to="/"
+              @mouseover="logoTextHover = true"
+              @mouseout="logoTextHover = false"
+            >
+              <span
+                class="transition duration-1000"
+                :class="{ 'text-primary': logoTextHover }"
+                >{{ config.blogName.substring(0, 3) }}</span
+              >{{ config.blogName.substring(3) }}
+            </nuxt-link>
           </h1>
           <nav class="md:ml-4">
             <ul class="flex">
-              <li>
-                <nuxt-link
-                  to="/about"
-                  class="ml-4 transition duration-300 hover:underline"
-                >
+              <li class="transition duration-1000 hover:scale-105">
+                <nuxt-link to="/" class="ml-4 hover:animate-pulse">
+                  home
+                </nuxt-link>
+              </li>
+              <li class="transition duration-1000 hover:scale-105">
+                <nuxt-link to="/about" class="ml-4 hover:animate-pulse">
                   about
                 </nuxt-link>
               </li>
-              <li>
-                <nuxt-link
-                  to="/privacy"
-                  class="ml-4 transition duration-300 hover:underline"
-                >
+              <li class="transition duration-1000 hover:scale-105">
+                <nuxt-link to="/privacy" class="ml-4 hover:animate-pulse">
                   privacy
                 </nuxt-link>
               </li>
@@ -51,25 +60,29 @@
           </nav>
         </div>
 
-        <!-- Search Input (Always visible) -->
-        <SearchInput />
+        <!-- Mobile & Desktop Search Input (Always visible) -->
+        <SearchInput class="transition duration-500" />
 
-        <!-- Right side Header (Buttons and Theme Toggle) -->
+        <!-- Desktop Right side Header (Buttons and Theme Toggle) -->
         <div class="mt-4 flex items-center md:mt-0">
           <UButton
             v-if="user"
-            class="mr-4 px-4 py-2 max-md:hidden"
+            class="mr-4 px-4 py-2 transition duration-500 max-md:hidden"
+            variant="outline"
             @click="profile"
           >
-            <Icon name="heroicons:user-solid" /> Profile
+            <Icon name="heroicons:user-solid" class="transition duration-500" />
+            Profile
           </UButton>
 
           <UButton
             aria-label="Theme"
-            class="mr-4 px-4 py-2 rounded-full max-md:hidden"
+            class="mr-4 rounded-full px-4 py-2 transition duration-500 max-md:hidden"
+            variant="outline"
             @click="isDark = !isDark"
           >
             <Icon
+              class="transition duration-500"
               :name="isDark ? 'heroicons:moon-solid' : 'heroicons:sun-solid'"
             />
           </UButton>
@@ -123,7 +136,7 @@
     </header>
 
     <!-- Content -->
-    <main class="container mx-auto flex-1 p-4">
+    <main class="container mx-auto flex-1 p-4 transition duration-500">
       <slot />
     </main>
 
@@ -172,11 +185,13 @@
         </p>
       </div>
     </footer>
+      <UNotifications />
   </div>
 </template>
 
 <script setup lang="ts">
 useHead({
+  link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   htmlAttrs: {
     lang: "en",
   },
@@ -186,6 +201,9 @@ const colorMode = useColorMode();
 
 const user = useSupabaseUser();
 const storage = useStorageUtils();
+
+const logoTextHover = ref(false);
+
 const isDark = computed({
   get() {
     return colorMode.value === "dark";
@@ -212,7 +230,10 @@ watch(
     // format title to look a little good :>
     let title = "";
     if (newRoute !== "/") {
-      title = newRoute.replaceAll("/", " | ").replaceAll("?", " ").replaceAll("=", ": ");
+      title = newRoute
+        .replaceAll("/", " | ")
+        .replaceAll("?", " ")
+        .replaceAll("=", ": ");
     }
 
     useSeoMeta({
@@ -227,5 +248,4 @@ watch(
 );
 </script>
 
-<style>
-</style>
+<style></style>

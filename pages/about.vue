@@ -6,7 +6,7 @@
       <header class="mb-6 text-center">
         <h1 class="text-3xl font-semibold">About Me</h1>
       </header>
-      <div class="shadow-lg">
+      <div class="shadow-lg duration-100">
         <p>Hello, I'm Mikołaj Szmalc, and welcome to my demonstration blog!</p>
         <br />
         <p>
