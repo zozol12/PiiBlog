@@ -5,11 +5,7 @@
       <div v-if="shouldShowNoPostsFound" class="text-xl text-red-500">
         No Posts found matching to your search :(
       </div>
-      <PostPlaceholder
-        v-for="index in 6"
-        v-if="shouldShowPlaceholders"
-        :key="index"
-      />
+
 
       <PostCard
         v-for="(post, index) in filteredPosts"

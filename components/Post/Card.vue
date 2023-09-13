@@ -8,9 +8,7 @@
           :src="storage.getThumbnailUrl(post.thumbnail)"
           :alt="post.name"
           format="webp"
-          loading="lazy"
           class="absolute inset-0 h-full w-full object-cover"
-          lazy
         />
         <div class="absolute inset-0 bg-black opacity-30" />
         <div
