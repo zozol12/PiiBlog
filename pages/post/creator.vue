@@ -117,11 +117,12 @@ async function submit() {
   await form.value.validate();
   isLoading.value = true;
   try {
+    const tagNames = state.value.tags.map(tag => tag.name);
     const postData = {
       name: state.value.name,
       slug: state.value.slug,
       content: state.value.content,
-      tags: state.value.tags,
+      tags: tagNames,
       thumbnail: state.value.thumbnail,
       meta_title: state.value.meta_title,
       meta_description: state.value.meta_description,

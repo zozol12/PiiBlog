@@ -20,7 +20,7 @@
           <UCard
             v-for="reply in getReplies(comment.id)"
             :key="reply.id"
-            class="mb-2 ml-4"
+            class="my-2 ml-4"
           >
             <div class="flex flex-col justify-between md:flex-row">
               <div>
@@ -46,7 +46,7 @@
               class="mt-2 w-full p-2"
               :placeholder="'Your Reply'"
             />
-            <UButton block variant="outline" class="my-4 ml-2" type="submit">
+            <UButton block :variant="isDark ? 'outline' : 'solid'" class="my-4 ml-2" type="submit">
               Reply
             </UButton>
           </form>
@@ -69,7 +69,7 @@
             placeholder="Your comment..."
           />
 
-          <UButton block variant="outline" class="my-4 ml-2" type="submit">
+          <UButton block :variant="colorMode.value === 'dark' ? 'outline' : 'solid'" class="my-4 ml-2" type="submit">
             Add Comment
           </UButton>
         </form>
@@ -85,6 +85,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const colorMode = useColorMode();
 
 const comments: Ref<any[]> = ref([]);
 const replies: Ref<any[]> = ref([]);

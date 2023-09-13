@@ -10,15 +10,15 @@
           <div
             class="animate-in bottom-0 right-0 flex h-[480px] flex-col rounded-xl bg-gray-800 shadow-2xl duration-700"
           >
-            <div class="flex-grow rounded-lg p-4 text-center text-white">
+            <div class="flex flex-col rounded-lg p-4 text-center text-white">
               <div class="mb-4 text-center">
-                <div class="text-sec text-2xl font-semibold text-white">
+                <div class="text-2xl font-semibold text-white">
                   Author
                 </div>
               </div>
-              PiiNut Industries
+              PiiNut
               <NuxtImg
-                class="mt-6 inline-block rounded-xl"
+                class="mt-6 rounded-xl self-center"
                 src="piinut-high-resolution-color-logo.webp"
                 format="webp"
                 loading="lazy"
@@ -29,7 +29,7 @@
               />
             </div>
 
-            <div class="flex-shrink-0 rounded-lg p-8 text-center">
+            <div class="rounded-lg p-8 text-center">
               <UButton
                 v-if="user"
                 color="red"
@@ -45,7 +45,7 @@
                 class="px-4 py-2"
                 @click="login"
               >
-                <Icon name="heroicons:lock-open-solid" /> Login
+                <Icon name="heroicons:lock-closed-solid" /> Login
               </UButton>
             </div>
           </div>
@@ -62,7 +62,7 @@
               v-for="(tag, index) in tags"
               :key="index"
               class="m-1 transition duration-500"
-              :variant="isDark ? 'outline' : 'solid'"
+              :variant="colorMode.value === 'dark'  ? 'outline' : 'solid'"
               :to="`/?tags=${tag.name}`"
             >
               {{ tag.name }}
@@ -84,15 +84,6 @@ async function loadTags() {
   tags.value = await useSupabase().getTags();
 }
 const colorMode = useColorMode();
-
-const isDark = computed({
-  get() {
-    return colorMode.value === "dark";
-  },
-  set() {
-    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
-  },
-});
 
 async function logout() {
   try {
