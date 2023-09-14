@@ -12,13 +12,11 @@
           >
             <div class="flex flex-col rounded-lg p-4 text-center text-white">
               <div class="mb-4 text-center">
-                <div class="text-2xl font-semibold text-white">
-                  Author
-                </div>
+                <div class="text-2xl font-semibold text-white">Author</div>
               </div>
               PiiNut
               <NuxtImg
-                class="mt-6 rounded-xl self-center"
+                class="mt-6 self-center rounded-xl"
                 src="piinut-high-resolution-color-logo.webp"
                 format="webp"
                 loading="lazy"
@@ -62,7 +60,7 @@
               v-for="(tag, index) in tags"
               :key="index"
               class="m-1 transition duration-500"
-              :variant="colorMode.value === 'dark'  ? 'outline' : 'solid'"
+              :variant="colorMode.value === 'dark' ? 'outline' : 'solid'"
               :to="`/?tags=${tag.name}`"
             >
               {{ tag.name }}

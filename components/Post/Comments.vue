@@ -46,7 +46,12 @@
               class="mt-2 w-full p-2"
               :placeholder="'Your Reply'"
             />
-            <UButton block :variant="isDark ? 'outline' : 'solid'" class="my-4 ml-2" type="submit">
+            <UButton
+              block
+              :variant="colorMode.value == 'dark' ? 'outline' : 'solid'"
+              class="my-4 ml-2"
+              type="submit"
+            >
               Reply
             </UButton>
           </form>
@@ -69,7 +74,12 @@
             placeholder="Your comment..."
           />
 
-          <UButton block :variant="colorMode.value === 'dark' ? 'outline' : 'solid'" class="my-4 ml-2" type="submit">
+          <UButton
+            block
+            :variant="colorMode.value === 'dark' ? 'outline' : 'solid'"
+            class="my-4 ml-2"
+            type="submit"
+          >
             Add Comment
           </UButton>
         </form>
@@ -97,7 +107,7 @@ const newCommentContent = ref("");
 const newCommentAuthor = ref("");
 const client = useSupabaseClient();
 const filter = useLangFilter(); // I hate typescript so much
-
+const config = useConfig()
 const toast = useToast();
 // Function to fetch comments for the specified post_id
 const fetchComments = async () => {
@@ -108,7 +118,7 @@ const fetchComments = async () => {
     .order("created_at", { ascending: true });
 
   if (error) {
-    // console.error("Error fetching comments:", error.message);
+    toast.add({ title: "There was unknown error fetching posts!", color: "red" })
   } else {
     for (const comment of data || []) {
       if (comment.reply_id === null) {
@@ -132,6 +142,10 @@ const createComment = async () => {
   if (checkLanguage([newCommentContent.value, newCommentAuthor.value])) {
     return;
   }
+  if (config.demoErrors){
+    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    return;
+  }
   const newComment: any = {
     content: newCommentContent.value,
     author: newCommentAuthor.value,
@@ -145,7 +159,10 @@ const createComment = async () => {
     .select();
 
   if (error) {
-    // Handle the error
+    toast.add({
+      title: "Could not create a comment!",
+      color: "red",
+    });
   } else {
     // Add the newly created comment to the comments list
     comments.value.push(data[0]);
@@ -184,7 +201,10 @@ const submitReply = async (commentId: number) => {
     if (checkLanguage([replyAuthor[commentId], replyContent[commentId]])) {
       return;
     }
-
+    if (config.demoErrors) {
+      toast.add({ title: "You cannot do it in demo!", color: "red" })
+      return;
+    }
     const newReply: any = {
       content: replyContent[commentId],
       author: replyAuthor[commentId],
@@ -198,7 +218,10 @@ const submitReply = async (commentId: number) => {
       .select();
 
     if (error) {
-      // Handle the error
+      toast.add({
+        title: "Could not create a reply!",
+        color: "red",
+      });
     } else {
       // Find the parent comment and add the newly created reply to it
       const parentComment = comments.value.find(

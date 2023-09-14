@@ -113,11 +113,17 @@ async function redirectToPost() {
   await navigateTo({ path: `/post/${state.value.slug}` });
 }
 
+const config = useConfig()
+
 async function submit() {
   await form.value.validate();
+  if (config.demoErrors) {
+    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    return;
+  }
   isLoading.value = true;
   try {
-    const tagNames = state.value.tags.map(tag => tag.name);
+    const tagNames = state.value.tags.map((tag) => tag.name);
     const postData = {
       name: state.value.name,
       slug: state.value.slug,
@@ -236,7 +242,10 @@ onMounted(async () => {
           <!-- Markdown Preview Section (Right) -->
           <div class="w-1/2 p-2">
             Content Preview
-            <div class="prose dark:prose-invert lg:prose-xl" v-html="renderedMarkdown" />
+            <div
+              class="prose dark:prose-invert lg:prose-xl"
+              v-html="renderedMarkdown"
+            />
           </div>
         </div>
         <USelectMenu

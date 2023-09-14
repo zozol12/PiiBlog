@@ -2,10 +2,10 @@
   <UCard class="animate-in zoom-in duration-700">
     <template #header> Login </template>
     <UForm ref="form" :state="state" class="space-y-3" @submit.prevent="signIn">
-      <UFormGroup label="Email" name="email">
+      <UFormGroup label="Email (hint: example@example.com)" name="email">
         <UInput v-model="state.email" />
       </UFormGroup>
-      <UFormGroup label="Password" name="password">
+      <UFormGroup label="Password (hint: example)" name="password">
         <UInput v-model="state.password" type="password" />
       </UFormGroup>
       <UButton

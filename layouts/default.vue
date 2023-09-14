@@ -83,7 +83,11 @@
           >
             <Icon
               class="text-xl transition duration-500"
-              :name="colorMode.value === 'dark' ? 'heroicons:moon-solid' : 'heroicons:sun-solid'"
+              :name="
+                colorMode.value === 'dark'
+                  ? 'heroicons:moon-solid'
+                  : 'heroicons:sun-solid'
+              "
             />
           </UButton>
         </div>

@@ -59,7 +59,7 @@ const client = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 const toast = useToast();
 const form = ref();
-
+const config = useConfig()
 // redirect to login page if user is not authenticated
 if (!user.value) {
   await navigateTo("/login");
@@ -84,6 +84,10 @@ onMounted(() => {
 
 // Create Tag
 async function createTag() {
+  if (config.demoErrors) {
+    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    return;
+  }
   if (newTagName.value) {
     const { data, error } = await client
       .from("Tags")
@@ -116,6 +120,10 @@ function editTag(tag: any) {
 }
 
 async function updateTag() {
+  if (config.demoErrors) {
+    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    return;
+  }
   if (editingTag.value && editedTag.value.name) {
     const { error } = await client
       .from("Tags")
@@ -132,13 +140,17 @@ async function updateTag() {
       editingTag.value = null; // Close the edit modal
       modalOpen.value = false;
       loadTags(); // Reload the tags list
-      toast.add({ title: "Tag upadated successfully" });
+      toast.add({ title: "Tag updated successfully" });
     }
   }
 }
 
 // Delete Tag
 async function deleteTag(tag: any) {
+    if (config.demoErrors) {
+    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    return;
+  }
   const { error } = await client.from("Tags").delete().eq("id", tag.id);
   if (error) {
     // console.error('Error deleting tag:', error.message)

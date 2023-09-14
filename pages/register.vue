@@ -5,11 +5,16 @@ const state: Ref<any> = ref({
 });
 const toast = useToast();
 const isLoading = ref(false);
+const config = useConfig()
 
 const form = ref();
 // Sign Up logic
 async function signUp() {
   isLoading.value = true;
+  if (config.demoErrors) {
+    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    return;
+  }
   try {
     await useSupabase().signUp(state.value.email, state.value.password);
     toast.add({ title: "Check your email to confirm!" });
@@ -27,22 +32,22 @@ async function signUp() {
 
 <template>
   <UCard class="animate-in zoom-in duration-700">
-    <template #header> Register </template>
-    <UForm ref="form" :state="state" @submit.prevent="signUp">
-      <UFormGroup label="Email" name="email">
+    <template #header> Login </template>
+    <UForm ref="form" :state="state" class="space-y-3" @submit.prevent="signUp">
+      <UFormGroup label="Email (hint: example@example.com)" name="email">
         <UInput v-model="state.email" />
       </UFormGroup>
-      <UFormGroup label="Password" name="password">
+      <UFormGroup label="Password (hint: example)" name="password">
         <UInput v-model="state.password" type="password" />
       </UFormGroup>
       <UButton
         :loading="isLoading"
         type="submit"
-        class="rounded-lg px-4 py-2 font-semibold focus:outline-none"
+        class="mt-4 rounded-lg px-4 py-2 font-semibold focus:outline-none"
       >
         {{ isLoading ? "Logging in..." : "Submit" }}
       </UButton>
-      <ULink to="/login"> Already have an account? </ULink>
+      <ULink class="ml-4" to="/login"> Already have an account? </ULink>
     </UForm>
   </UCard>
 </template>

@@ -13,7 +13,10 @@
       </header>
       <main>
         <div v-if="post">
-          <div class="prose dark:prose-invert lg:prose-xl" v-html="md.render(post.content)" />
+          <div
+            class="prose dark:prose-invert lg:prose-xl"
+            v-html="md.render(post.content)"
+          />
         </div>
         <div v-else-if="!postFetched" class="text-center">
           <p>Loading post...</p>
