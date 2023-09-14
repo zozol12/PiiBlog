@@ -31,7 +31,7 @@
     "@types/markdown-it-link-attributes": "^3.0.1",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
-    "nuxt": "^3.7.1",
+    "nuxt": "^3.7.3",
     "nuxt-icon": "^0.5.0",
     "prettier": "3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
