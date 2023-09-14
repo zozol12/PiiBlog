@@ -5,14 +5,14 @@ const state: Ref<any> = ref({
 });
 const toast = useToast();
 const isLoading = ref(false);
-const config = useConfig()
+const config = useConfig();
 
 const form = ref();
 // Sign Up logic
 async function signUp() {
   isLoading.value = true;
   if (config.demoErrors) {
-    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    toast.add({ title: "You cannot do it in demo!", color: "red" });
     return;
   }
   try {

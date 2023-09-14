@@ -9,6 +9,6 @@ export const useConfig = () => {
     blogDesc,
     copyRightNotice,
     showLoginButton,
-    demoErrors
+    demoErrors,
   };
 };

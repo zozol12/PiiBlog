@@ -113,12 +113,12 @@ async function redirectToPost() {
   await navigateTo({ path: `/post/${state.value.slug}` });
 }
 
-const config = useConfig()
+const config = useConfig();
 
 async function submit() {
   await form.value.validate();
   if (config.demoErrors) {
-    toast.add({ title: "You cannot do it in demo!", color: "red" })
+    toast.add({ title: "You cannot do it in demo!", color: "red" });
     return;
   }
   isLoading.value = true;

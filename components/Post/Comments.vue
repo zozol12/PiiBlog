@@ -107,7 +107,7 @@ const newCommentContent = ref("");
 const newCommentAuthor = ref("");
 const client = useSupabaseClient();
 const filter = useLangFilter(); // I hate typescript so much
-const config = useConfig()
+const config = useConfig();
 const toast = useToast();
 // Function to fetch comments for the specified post_id
 const fetchComments = async () => {
@@ -118,7 +118,10 @@ const fetchComments = async () => {
     .order("created_at", { ascending: true });
 
   if (error) {
-    toast.add({ title: "There was unknown error fetching posts!", color: "red" })
+    toast.add({
+      title: "There was unknown error fetching posts!",
+      color: "red",
+    });
   } else {
     for (const comment of data || []) {
       if (comment.reply_id === null) {
@@ -142,8 +145,8 @@ const createComment = async () => {
   if (checkLanguage([newCommentContent.value, newCommentAuthor.value])) {
     return;
   }
-  if (config.demoErrors){
-    toast.add({ title: "You cannot do it in demo!", color: "red" })
+  if (config.demoErrors) {
+    toast.add({ title: "You cannot do it in demo!", color: "red" });
     return;
   }
   const newComment: any = {
@@ -202,7 +205,7 @@ const submitReply = async (commentId: number) => {
       return;
     }
     if (config.demoErrors) {
-      toast.add({ title: "You cannot do it in demo!", color: "red" })
+      toast.add({ title: "You cannot do it in demo!", color: "red" });
       return;
     }
     const newReply: any = {
