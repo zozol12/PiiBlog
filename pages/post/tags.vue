@@ -55,11 +55,12 @@ import type { FormError } from "@nuxthq/ui/dist/runtime/types";
 const newTagName: Ref<string> = ref("");
 const tags: Ref<any[]> = ref([]);
 
-const client = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 const toast = useToast();
 const form = ref();
 const config = useConfig();
+const backend = useBackend(); // Initialize your backend
+
 // redirect to login page if user is not authenticated
 if (!user.value) {
   await navigateTo("/login");
@@ -69,12 +70,11 @@ const modalOpen = ref(false);
 
 // Fetch tags
 async function loadTags() {
-  const { data, error } = await client.from("Tags").select("*");
-  if (error) {
-    // console.error('Error fetching tags:', error.message)
-  } else {
-    tags.value = data;
-    // console.log(tags.value)
+  try {
+    const tagData = await backend.getTags(); // Use your backend function to get tags
+    tags.value = tagData || [];
+  } catch (error) {
+    // Handle error if needed
   }
 }
 
@@ -89,22 +89,13 @@ async function createTag() {
     return;
   }
   if (newTagName.value) {
-    const { data, error } = await client
-      .from("Tags")
-      .upsert(
-        { name: newTagName.value }, // Provide an array of objects to upsert
-      )
-      .select();
-    if (error) {
-      // console.error('Error creating tag:', error.message)
-      toast.add({
-        title: error.message || "An error occurred while creating the tag",
-        color: "red",
-      });
-    } else {
+    try {
+      await backend.insert({ table: "Tags", data: { name: newTagName.value } }); // Use your backend function to create a tag
       newTagName.value = "";
       loadTags();
       toast.add({ title: "Tag created successfully" });
+    } catch (error) {
+      // Handle error if needed
     }
   }
 }
@@ -125,22 +116,18 @@ async function updateTag() {
     return;
   }
   if (editingTag.value && editedTag.value.name) {
-    const { error } = await client
-      .from("Tags")
-      .update({ name: editedTag.value.name })
-      .eq("id", editingTag.value.id);
-
-    if (error) {
-      // console.error('Error updating tag:', error.message)
-      toast.add({
-        title: error.message || "An error occurred while updating tag",
-        color: "red",
+    try {
+      await backend.update({
+        table: "Tags",
+        value: editingTag.value.id,
+        data: { name: editedTag.value.name },
       });
-    } else {
       editingTag.value = null; // Close the edit modal
       modalOpen.value = false;
       loadTags(); // Reload the tags list
       toast.add({ title: "Tag updated successfully" });
+    } catch (error) {
+      // Handle error if needed
     }
   }
 }
@@ -151,16 +138,12 @@ async function deleteTag(tag: any) {
     toast.add({ title: "You cannot do it in demo!", color: "red" });
     return;
   }
-  const { error } = await client.from("Tags").delete().eq("id", tag.id);
-  if (error) {
-    // console.error('Error deleting tag:', error.message)
-    toast.add({
-      title: error.message || "An error occurred while deleting tag...",
-      color: "red",
-    });
-  } else {
+  try {
+    await backend.delete("Tags", "id", tag.id); // Use your backend function to delete a tag
     loadTags();
     toast.add({ title: "Tag deleted successfully" });
+  } catch (error) {
+    // Handle error if needed
   }
 }
 </script>

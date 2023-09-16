@@ -1,3 +1,5 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
   <div class="animate-in zoom-in space-y-4 duration-700 md:w-11/12">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -7,7 +9,7 @@
       </div>
 
       <PostPlaceholder
-        v-for="index in 6"
+        v-for="index in postLimit"
         v-if="shouldShowPlaceholders"
         :key="index"
       />
@@ -34,8 +36,8 @@
 <script setup lang="ts">
 type Post = Database["public"]["Tables"]["Posts"]["Row"];
 
-const client = useSupabaseClient<Database>();
-const postLimit: number = 6;
+const backend = useBackend();
+const postLimit: number = 4;
 
 const visiblePosts: Ref<Post[]> = ref([]);
 const loadedPosts: Ref<number> = ref(0);
@@ -53,55 +55,59 @@ const query: any = {
   author: route.query.author || "",
 };
 
-async function loadMorePosts() {
+// TODO useBackend.vue integration
+
+const loadMorePosts = async () => {
   if (isLoading.value || !hasMorePosts.value) {
     return;
   }
 
   isLoading.value = true;
 
-  const postQuery = client
-    .from("Posts")
-    .select("slug, tags, name, thumbnail, created_at, created_by")
-    .range(loadedPosts.value, loadedPosts.value + postLimit - 1)
-    .order("created_at", { ascending: false });
-
-  if (query.tags !== "") {
-    postQuery.contains("tags", [query.tags]); // Filter by tags if not empty
+  const filters = [];
+  // Build an array of filter conditions based on query parameters
+  if (query.tags) {
+    filters.push({ field: "tags", value: [query.tags], operator: "contains" });
   }
-
-  if (query.search !== "") {
-    postQuery.ilike("name", `%${query.search}%`); // Filter by name if not empty
+  if (query.search) {
+    filters.push({
+      field: "name",
+      value: `%${query.search}`,
+      operator: "ilike",
+    });
   }
-
-  if (query.author !== "") {
-    postQuery.ilike("created_by", `%${query.author}%`); // Filter by author if not empty
+  if (query.author) {
+    filters.push({
+      field: "created_by",
+      value: `%${query.author}`,
+      operator: "ilike",
+    });
   }
+  // Use selectSupabase to fetch posts
+  const newPosts = await backend.select({
+    table: "Posts",
+    offset: loadedPosts.value,
+    limit: postLimit,
+    orderByField: "created_at",
+    ascendingDate: false,
+    queryOptions: "slug, tags, name, thumbnail, created_at, created_by",
+    filters,
+  });
 
-  try {
-    const { data: newPosts, error } = await postQuery;
+  if (newPosts.length === 0) {
+    hasMorePosts.value = false;
+  } else {
+    visiblePosts.value = [...visiblePosts.value, ...newPosts];
+    loadedPosts.value += newPosts.length;
 
-    if (error) {
-      throw error;
-    }
-
-    if (newPosts.length === 0) {
+    if (newPosts.length < postLimit) {
       hasMorePosts.value = false;
-    } else {
-      visiblePosts.value = [...visiblePosts.value, ...newPosts];
-      loadedPosts.value += newPosts.length;
-
-      if (newPosts.length < postLimit) {
-        hasMorePosts.value = false;
-      }
     }
-  } catch (error) {
-    // Handle the error appropriately (e.g., show an error message)
-    // console.error('Error loading posts:', error.message)
   }
+
   isLoading.value = false;
   initialLoad.value = true;
-}
+};
 // Initial load
 loadMorePosts();
 
@@ -130,18 +136,9 @@ const filteredPosts = computed(() => {
 watch(
   () => route.query,
   (newQuery) => {
-    query.tags = "";
-    query.search = "";
-    query.author = "";
-    if (newQuery.tags) {
-      query.tags = newQuery.tags;
-    }
-    if (newQuery.search) {
-      query.search = newQuery.search;
-    }
-    if (newQuery.author) {
-      query.author = newQuery.author;
-    }
+    query.tags = newQuery.tags || "";
+    query.search = newQuery.search || "";
+    query.author = newQuery.author || "";
 
     // Reset values and search with new query
     visiblePosts.value = [];

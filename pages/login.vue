@@ -32,7 +32,7 @@ const toast = useToast();
 async function signIn() {
   isLoading.value = true;
   try {
-    await useSupabase().signIn(state.value.email, state.value.password);
+    await useBackend().signIn(state.value.email, state.value.password);
   } catch (_e: any) {
     const error: Error = _e;
     toast.add({

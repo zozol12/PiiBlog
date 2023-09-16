@@ -79,13 +79,13 @@ const user = useSupabaseUser();
 const tags: Ref<any[]> = ref([]);
 // Fetch tags
 async function loadTags() {
-  tags.value = await useSupabase().getTags();
+  tags.value = await useBackend().getTags();
 }
 const colorMode = useColorMode();
 
 async function logout() {
   try {
-    await useSupabase().signOut();
+    await useBackend().signOut();
   } catch (error) {
     // console.error(error)
   }

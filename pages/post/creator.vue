@@ -3,7 +3,7 @@
 import type { FormError } from "@nuxthq/ui/dist/runtime/types";
 
 const route = useRoute();
-const supabase = useSupabase();
+const backend = useBackend();
 
 const toast = useToast();
 
@@ -23,31 +23,26 @@ const state = ref<any>({
 
 async function fetchPostData() {
   try {
-    const { data: postData, error: postError } = await client
-      .from("Posts")
-      .select("*")
-      .eq("slug", postSlug)
-      .single();
-
-    if (postError) {
-      throw postError;
-    }
+    const postData = await backend.select({
+      table: "Posts",
+      filters: [{ field: "slug", value: postSlug }],
+      limit: 1,
+    });
 
     // Populate form fields with fetched data
-    if (postData) {
-      state.value.name = postData.name;
-      state.value.slug = postData.slug;
-      state.value.thumbnail = postData.thumbnail;
-      state.value.tags = postData.tags;
-      state.value.content = postData.content;
-      state.value.meta_title = postData.meta_title;
-      state.value.meta_description = postData.meta_description;
+    if (postData.length > 0) {
+      const postDataItem = postData[0];
+      state.value.name = postDataItem.name;
+      state.value.slug = postDataItem.slug;
+      state.value.thumbnail = postDataItem.thumbnail;
+      state.value.tags = postDataItem.tags;
+      state.value.content = postDataItem.content;
+      state.value.meta_title = postDataItem.meta_title;
+      state.value.meta_description = postDataItem.meta_description;
     }
-  } catch (_e: any) {
-    const error: Error = _e;
-    // console.error(error)
+  } catch (error) {
     toast.add({
-      title: error.message || "An error occurred while creating the post",
+      title: error.message || "An error occurred while fetching the post",
       color: "red",
     });
   }
@@ -77,15 +72,13 @@ if (!user.value) {
   await navigateTo("/login");
 }
 
-const client = useSupabaseClient<Database>();
-
 async function handleThumbnailChange(event: Event) {
   const target = event.target as HTMLInputElement;
   if (target.files) {
     state.value.thumbnailFile = target.files[0];
     state.value.thumbnail = state.value.thumbnailFile.name;
     // Upload the thumbnail to Supabase storage
-    const { data: thumbnailData, error: thumbnailError } = await client.storage
+    const { data: thumbnailData, error: thumbnailError } = await backend.storage
       .from("thumbnails")
       .upload(state.value.thumbnail, state.value.thumbnailFile);
 
@@ -102,12 +95,12 @@ async function handleThumbnailChange(event: Event) {
 }
 
 async function removePost() {
-  await client.from("Posts").delete().eq("slug", postSlug);
+  await backend.delete("Posts", "slug", postSlug);
 
   await navigateTo("/");
 }
 type Tags = Database["public"]["Tables"]["Tags"][];
-const tags: Tags = await supabase.getTags();
+const tags: Tags = await backend.getTags();
 
 async function redirectToPost() {
   await navigateTo({ path: `/post/${state.value.slug}` });
@@ -123,7 +116,7 @@ async function submit() {
   }
   isLoading.value = true;
   try {
-    const tagNames = state.value.tags.map((tag) => tag.name);
+    const tagNames = state.value.tags.map((tag: any) => tag.name);
     const postData = {
       name: state.value.name,
       slug: state.value.slug,
@@ -132,41 +125,32 @@ async function submit() {
       thumbnail: state.value.thumbnail,
       meta_title: state.value.meta_title,
       meta_description: state.value.meta_description,
-      created_by: user.value.email,
     };
+
     if (mode === "edit") {
-      const { data, error } = await client
-        .from("Posts")
-        .update(postData)
-        .eq("slug", postSlug)
-        .select();
-      if (error) {
-        throw error;
-      } else {
-        toast.add({
-          title: "Post updated successfully. Redirecting...",
-          click: redirectToPost,
-          callback: redirectToPost,
-        });
-      }
+      // Modify this section to use your backend's update function
+      await backend.update({
+        table: "Posts",
+        key: "slug",
+        value: state.value.slug, 
+        data: postData,
+      });
+
+      toast.add({
+        title: "Post updated successfully. Redirecting...",
+        click: redirectToPost,
+        callback: redirectToPost,
+      });
     } else {
-      const { data, error } = await client
-        .from("Posts")
-        .insert(postData)
-        .select();
-      if (error) {
-        throw error;
-      } else {
-        toast.add({
-          title: "Post created successfully. Redirecting...",
-          click: redirectToPost,
-          callback: redirectToPost,
-        });
-      }
+      await backend.insert({ table: "Posts", data: postData });
+
+      toast.add({
+        title: "Post created successfully. Redirecting...",
+        click: redirectToPost,
+        callback: redirectToPost,
+      });
     }
-  } catch (_e: any) {
-    const error: Error = _e;
-    // console.error(error)
+  } catch (error: any) {
     toast.add({
       title: error.message || "An error occurred while creating the post",
       color: "red",

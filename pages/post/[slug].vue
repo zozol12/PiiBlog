@@ -59,24 +59,20 @@ const route = useRoute();
 
 const slug = ref(route.params.slug);
 const post: Ref<any> = ref(null);
-const client = useSupabaseClient<Database>();
 
 const postFetched = ref(false); // Initially, hide the post content
 const user = useSupabaseUser();
 
-async function fetchPost() {
-  const { data, error } = await client
-    .from("Posts")
-    .select("*")
-    .eq("slug", slug.value)
-    .single();
+const backend = useBackend();
 
-  if (error) {
-    // console.error('Error fetching post:', error.message)
-  } else {
+async function fetchPost() {
+  let data;
+  const filters = [{ field: "slug", value: slug.value }];
+  try {
+    const posts = await backend.select({ table: "Posts", filters, limit: 1 });
+    data = posts[0];
     post.value = data;
-    // console.log(post.value)
-  }
+  } catch (_e) {}
 
   postFetched.value = true;
   useSeoMeta({

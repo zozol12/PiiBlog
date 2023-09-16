@@ -16,7 +16,7 @@ async function signUp() {
     return;
   }
   try {
-    await useSupabase().signUp(state.value.email, state.value.password);
+    await useBackend().signUp(state.value.email, state.value.password);
     toast.add({ title: "Check your email to confirm!" });
   } catch (_e: any) {
     const error: Error = _e;

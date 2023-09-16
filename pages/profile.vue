@@ -101,7 +101,7 @@ const passwordForm = reactive({ currentPassword: "", newPassword: "" });
 
 async function logout() {
   try {
-    await useSupabase().signOut();
+    await useBackend().signOut();
   } catch (error) {
     // console.error(error)
   }

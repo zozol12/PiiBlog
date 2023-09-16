@@ -206,6 +206,8 @@ const colorMode = useColorMode();
 const user = useSupabaseUser();
 const storage = useStorageUtils();
 
+const backend = useBackend();
+
 const logoTextHover = ref(false);
 
 const isDark = computed({
