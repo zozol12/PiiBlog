@@ -132,7 +132,7 @@ async function submit() {
       await backend.update({
         table: "Posts",
         key: "slug",
-        value: state.value.slug, 
+        value: state.value.slug,
         data: postData,
       });
 
