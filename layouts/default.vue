@@ -17,7 +17,8 @@
             <nuxt-link to="/"> {{ config.blogName }} </nuxt-link>
           </h1>
           <UButton
-            id="Mobile menu"
+            id="Mobile menu" 
+            aria-label="Mobile menu"
             class="text-2xl text-white"
             @click="mobileMenuOpen = !mobileMenuOpen"
           >
