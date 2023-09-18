@@ -2,7 +2,9 @@ import tailwindTypography from "@tailwindcss/typography";
 import tailwindAnimate from "tailwindcss-animate";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
+  experimental: {
+    headNext: true,
+  },
   devtools: {
     enabled: true,
 
