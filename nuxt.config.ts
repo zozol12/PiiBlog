@@ -2,7 +2,9 @@ import tailwindTypography from "@tailwindcss/typography";
 import tailwindAnimate from "tailwindcss-animate";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
+  experimental: {
+    headNext: true,
+  },
   devtools: {
     enabled: true,
 
@@ -29,13 +31,14 @@ export default defineNuxtConfig({
   },
   modules: [
     "@nuxtjs/partytown",
+    "nuxt-icon",
+    "@nuxt/image",
     "@nuxt/ui",
+    "nuxt-speedkit",
     "@nuxtjs/tailwindcss",
     "@nuxtjs/supabase",
     "@nuxtjs/robots",
     //    '@nuxtjs/html-validator',
-    "nuxt-icon",
-    "@nuxt/image",
   ],
   ui: {
     global: true,
